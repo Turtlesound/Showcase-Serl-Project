@@ -1,0 +1,35 @@
+{
+    "projects": [
+      {
+        "id": "rejoinderoo",
+        "title": "Rejoinderoo",
+        "description": "A utility for joining remote work sessions.",
+        "type": "research",
+        "tags": ["remote", "workspace", "automation"],
+        "screenshots": [
+          "https://raw.githubusercontent.com/andreas-bauer/rejoinderoo/main/images/logo.png",
+          "https://raw.githubusercontent.com/andreas-bauer/rejoinderoo/main/images/screenshot.png"
+        ],
+        "url": "https://github.com/andreas-bauer/rejoinderoo",
+        "created_at": "2024-09-16T00:00:00Z",
+        "updated_at": "2024-09-16T00:00:00Z",
+        "author": "Andreas Bauer"
+      },
+      {
+        "id": "credit-maker",
+        "title": "Credit Maker",
+        "description": "Tool for creating and managing digital credits.",
+        "type": "student",
+        "tags": ["credit", "management", "tool"],
+        "screenshots": [
+          "https://raw.githubusercontent.com/andreas-bauer/credit-maker/main/screenshot.png",
+          "https://raw.githubusercontent.com/andreas-bauer/credit-maker/main/src/images/robot-logo128.png"
+        ],
+        "url": "https://github.com/andreas-bauer/credit-maker",
+        "created_at": "2024-09-16T00:00:00Z",
+        "updated_at": "2024-09-16T00:00:00Z",
+        "author": "Andreas Bauer"
+      }
+    ]
+  }
+  
