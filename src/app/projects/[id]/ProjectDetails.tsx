@@ -1,5 +1,5 @@
 // /src/app/projects/[id]/ProjectDetails.tsx
-'use client';  // This is a client-side component
+'use client';  
 
 import Image from 'next/image';
 

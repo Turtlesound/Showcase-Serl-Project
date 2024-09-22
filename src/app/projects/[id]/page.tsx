@@ -1,8 +1,9 @@
 // /src/app/projects/[id]/page.tsx
-import ProjectDetails from './ProjectDetails';
+
+import ProjectDetails from './ProjectDetails'; // Import the ProjectDetails component
 
 async function getProjects() {
-  const res = await fetch('http://localhost:3000/projects.json');
+  const res = await fetch('http://localhost:3000/projects.json', { cache: 'no-store' });
   const data = await res.json();
   return data.projects;
 }

@@ -1,5 +1,5 @@
 // /src/app/projects/page.tsx
-'use client';
+'use client';  // Add this line to mark the component as a Client Component
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -8,13 +8,21 @@ import Link from 'next/link';
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
 
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/projects.json');
+      const data = await res.json();
+      setProjects(data.projects);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+  };
+
   useEffect(() => {
-    fetch('/projects.json')
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(data.projects);
-      })
-      .catch((error) => console.error('Error fetching projects:', error));
+    fetchProjects(); // Initial fetch
+    const intervalId = setInterval(fetchProjects, 60000); // Fetch every minute
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
   return (
