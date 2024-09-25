@@ -1,9 +1,10 @@
-// layout.tsx
-import React from 'react';
-import type { Metadata } from 'next';
+'use client';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import localFont from 'next/font/local';
 import './globals.css';
 
+// Fonts
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -16,48 +17,52 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
-export const metadata: Metadata = {
-  title: 'Project Showcase',
-  description: 'A showcase of all the projects',
-};
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const [searchTerm, setSearchTerm] = useState('');
+
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gray-100 text-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="bg-white shadow-md">
-          <nav className="mx-auto flex max-w-7xl items-center justify-between p-6">
-            <div className="text-lg font-bold">
-              <a href="/" className="hover:underline">
-                Project Showcase
-              </a>
+        {/* Header with Search Bar */}
+        <header className="bg-gray-900 text-white py-4">
+          <div className="container mx-auto flex justify-between items-center px-6">
+            <div>
+              <Link href="/" className="text-2xl font-bold">
+                MyProject
+              </Link>
             </div>
-            <ul className="flex space-x-4 text-sm">
-              <li>
-                <a href="/" className="text-gray-600 hover:text-gray-900">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="/projects" className="text-gray-600 hover:text-gray-900">
-                  Projects
-                </a>
-              </li>
-            </ul>
-          </nav>
+            <div className="flex-1 mx-8">
+              {/* Search Bar */}
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search projects..."
+                className="w-full px-4 py-2 text-gray-900 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+            </div>
+            <nav className="space-x-6">
+              <Link href="/" className="hover:underline">
+                Home
+              </Link>
+              <Link href="/projects" className="hover:underline">
+                Projects
+              </Link>
+              {/* Add more links if needed */}
+            </nav>
+          </div>
         </header>
 
-        <main className="container mx-auto px-4 py-8">{children}</main>
-
-        <footer className="bg-white py-4 text-center text-sm text-gray-600">
-          &copy; {new Date().getFullYear()} Project Showcase. All rights reserved.
-        </footer>
+        {/* Main Content */}
+        <main className="container mx-auto py-8 px-4">
+          {children}
+        </main>
       </body>
     </html>
   );

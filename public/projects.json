@@ -33,7 +33,7 @@
       {
         "id": "test-project",
         "title": "Test Project",
-        "description": "A project to showcase testing functionalities. Do this change work",
+        "description": "A project to showcase testing functionalities.",
         "type": "testing",
         "tags": ["test", "example", "demo"],
         "screenshots": [
