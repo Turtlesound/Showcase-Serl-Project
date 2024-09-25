@@ -6,6 +6,8 @@ import Link from 'next/link';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchProjects = async () => {
     try {
@@ -19,9 +21,19 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     fetchProjects(); // Initial fetch
-    const intervalId = setInterval(fetchProjects, 60000); // Fetch every minute
-    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
+
+  useEffect(() => {
+    // Filter the projects based on the search term
+    const filtered = projects.filter((project) =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    setFilteredProjects(filtered);
+  }, [searchTerm, projects]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -30,11 +42,13 @@ export default function ProjectsPage() {
           Project Showcase
         </h1>
 
-        {projects.length > 0 ? (
+
+        {filteredProjects.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 px-4">
-            {projects.map((project) => (
-              <Link key={project.id} href={`/projects/${project.id}`} className="group">
-                <div className="rounded-lg bg-white shadow-md overflow-hidden group-hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer">
+            {filteredProjects.map((project) => (
+              // Wrap the whole card in Link to make the project clickable
+              <Link href={`/projects/${project.id}`} key={project.id} className="rounded-lg bg-white shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <div>
                   <Image
                     src={project.screenshots[0]}
                     alt={project.title}
@@ -43,11 +57,12 @@ export default function ProjectsPage() {
                     className="object-cover w-full h-48"
                   />
                   <div className="p-6">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-blue-500 transition-colors duration-300">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
                       {project.title}
                     </h2>
                     <p className="text-gray-600">{project.description}</p>
                     <p className="text-sm text-gray-500 mt-2">Type: {project.type}</p>
+                    <p className="text-sm text-gray-500 mt-2">Author: {project.author}</p>
                   </div>
                 </div>
               </Link>
@@ -55,7 +70,7 @@ export default function ProjectsPage() {
           </div>
         ) : (
           <div className="flex items-center justify-center py-24">
-            <p className="text-lg text-gray-600">Loading projects...</p>
+            <p className="text-lg text-gray-600">No projects found matching the filters</p>
           </div>
         )}
       </div>
