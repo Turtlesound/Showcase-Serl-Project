@@ -24,7 +24,11 @@ export default async function Page({ params }) {
   const project = await getProjectById(params.id);
 
   if (!project) {
-    return <p>Project not found.</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg font-medium text-red-600">Project not found.</p>
+      </div>
+    );
   }
 
   return <ProjectDetails projectData={project} />;

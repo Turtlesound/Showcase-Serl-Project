@@ -1,6 +1,4 @@
-// /src/app/projects/[id]/ProjectDetails.tsx
-
-'use client'; // This marks the component as a Client Component
+'use client';
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -31,33 +29,53 @@ export default function ProjectDetails({ projectData }) {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, [projectData.id]);
 
-  if (loading) return <p>Loading project...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg font-medium">Loading project...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg font-medium text-red-600">Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
-      <Image
-        src={project.screenshots[0]}
-        alt={project.title}
-        width={600}
-        height={300}
-        className="mb-4"
-      />
-      <p>{project.description}</p>
-      <p className="italic mt-2">Type: {project.type}</p>
-      <p>Tags: {project.tags.join(', ')}</p>
-      <p>Author: {project.author}</p>
-      <p>Created: {project.created_at}</p>
-      <p>Updated: {project.updated_at}</p>
-      <a
-        href={project.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-500 hover:underline mt-4 inline-block"
-      >
-        Visit Project
-      </a>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div className="mb-6">
+          <Image
+            src={project.screenshots[0]}
+            alt={project.title}
+            width={400}  
+            height={250} 
+            className="rounded-lg object-cover w-full h-auto"
+          />
+        </div>
+
+        <div>
+          <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
+          <p className="text-lg mb-4">{project.description}</p>
+          <p className="italic text-sm text-gray-600 mb-2">Type: {project.type}</p>
+          <p className="text-sm text-gray-600 mb-2">Tags: {project.tags.join(', ')}</p>
+          <p className="text-sm text-gray-600 mb-2">Author: <span className="font-semibold">{project.author}</span></p>
+          <p className="text-sm text-gray-600 mb-2">Created: <span className="font-semibold">{new Date(project.created_at).toLocaleDateString()}</span></p>
+          <p className="text-sm text-gray-600 mb-2">Updated: <span className="font-semibold">{new Date(project.updated_at).toLocaleDateString()}</span></p>
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-4 text-blue-500 hover:underline text-lg font-semibold"
+          >
+            Visit Project
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
