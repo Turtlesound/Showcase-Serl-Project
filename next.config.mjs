@@ -5,7 +5,6 @@ const nextBasePath = process.env.NEXT_BASE_PATH || ''; // Default to empty strin
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true, // Enable React's strict mode for development
-  output: 'export', // Enable static export
   basePath: nextBasePath, // Set the base path from environment variable
   images: {
     unoptimized: true, // Disable image optimization for static export

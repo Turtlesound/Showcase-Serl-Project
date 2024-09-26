@@ -1,20 +1,10 @@
-// Define the Project type
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  screenshots: string[];
-  tags: string[];
-  type: string;
-  author: string;
-  created_at: string;
-  updated_at: string;
-  url: string;
-}
+// lib/projectService.ts
+
+import { Project } from './projectTypes'; // Adjust the import path as necessary
 
 // Fetch all projects
 export async function getProjects(): Promise<Project[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, { cache: 'no-store' });
+  const res = await fetch('/api/projects'); // Fetch from the local API route
   if (!res.ok) {
     throw new Error('Failed to fetch projects');
   }
@@ -22,20 +12,20 @@ export async function getProjects(): Promise<Project[]> {
   return data.projects; // Return the projects array
 }
 
+// lib/projectService.ts
+
 export async function getProjectById(id: string): Promise<Project | undefined> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, { cache: 'no-store' }); // Fetch the entire projects.json file
-  if (!res.ok) {
-    throw new Error('Failed to fetch projects');
-  }
+  const projects = await getProjects(); // Get all projects
+  console.log('All Projects:', projects); // Log all projects
+  console.log('Searching for Project ID:', id); // Log the ID being searched
 
-  const data = await res.json();
-
-  // Find the project by ID
-  const project = data.projects.find((project: Project) => project.id === id);
+  const project = projects.find((project: Project) => project.id === id); // Find the project by ID
 
   if (!project) {
-    console.warn(`Project with ID ${id} not found. Available IDs:`, data.projects.map((p: Project) => p.id)); // Specify p's type here
+    console.warn(`Project with ID ${id} not found.`);
   }
 
   return project; // Return the found project or undefined if not found
 }
+
+
