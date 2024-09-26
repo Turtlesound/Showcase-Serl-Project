@@ -17,17 +17,14 @@ interface Project {
   url: string;
 }
 
-
 interface ProjectDetailsProps {
   projectData: Project;
 }
 
-
-
-export default function ProjectDetails({ projectData }) {
-  const [project, setProject] = useState(projectData);
+export default function ProjectDetails({ projectData }: ProjectDetailsProps) {
+  const [project, setProject] = useState<Project>(projectData);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -36,10 +33,10 @@ export default function ProjectDetails({ projectData }) {
       try {
         const res = await fetch('http://localhost:3000/projects.json', { cache: 'no-store' });
         const data = await res.json();
-        const updatedProject = data.projects.find((project) => project.id === projectData.id);
+        const updatedProject = data.projects.find((project: Project) => project.id === projectData.id);
         if (!updatedProject) throw new Error('Project not found');
         setProject(updatedProject);
-      } catch (err) {
+      } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -49,7 +46,7 @@ export default function ProjectDetails({ projectData }) {
     const intervalId = setInterval(fetchProject, 60000); // Fetch every minute
     fetchProject(); // Initial fetch
     return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [projectData.id]); 
+  }, [projectData.id]);
 
   if (loading) {
     return (
@@ -101,6 +98,3 @@ export default function ProjectDetails({ projectData }) {
     </div>
   );
 }
-
-
-
