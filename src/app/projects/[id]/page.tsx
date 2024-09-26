@@ -10,6 +10,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Fetch project details when the component mounts or `id` changes
   useEffect(() => {
@@ -65,18 +66,50 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     );
   }
 
+  // Function to go to the next image
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => 
+      (prevIndex + 1) % project.screenshots.length
+    );
+  };
+
+  // Function to go to the previous image
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => 
+      (prevIndex - 1 + project.screenshots.length) % project.screenshots.length
+    );
+  };
+
   // Render project details
   return (
     <div className="min-h-screen p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        <div className="mb-6">
+        <div className="mb-6 relative h-[500px] w-full"> {/* Fixed height for container */}
           <Image
-            src={project.screenshots[0]}
-            alt={project.title}
-            width={400}
-            height={250}
-            className="rounded-lg object-cover w-full h-auto"
+            src={project.screenshots[currentImageIndex]}
+            alt={`${project.title} screenshot ${currentImageIndex + 1}`}
+            fill // Fill the parent container
+            sizes="100vw" // Responsive size
+            className="rounded-lg object-contain" // Maintain aspect ratio
           />
+          <div className="absolute inset-0 flex justify-between items-center">
+            <button 
+              className="bg-transparent text-gray-800 text-3xl cursor-pointer p-1 hover:bg-gray-200 rounded-full"
+              onClick={prevImage}
+              disabled={project.screenshots.length <= 1}
+              aria-label="Previous image"
+            >
+              &#10094; {/* Left Arrow */}
+            </button>
+            <button 
+              className="bg-transparent text-gray-800 text-3xl cursor-pointer p-1 hover:bg-gray-200 rounded-full"
+              onClick={nextImage}
+              disabled={project.screenshots.length <= 1}
+              aria-label="Next image"
+            >
+              &#10095; {/* Right Arrow */}
+            </button>
+          </div>
         </div>
 
         <div>
