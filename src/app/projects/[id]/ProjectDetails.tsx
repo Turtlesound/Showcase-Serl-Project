@@ -2,20 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-
-// Define the type for the project data
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  screenshots: string[];
-  tags: string[];
-  type: string;
-  author: string;
-  created_at: string;
-  updated_at: string;
-  url: string;
-}
+import { Project, getProjectById } from '@/lib/projectService'; // Import the Project type and fetch function
 
 interface ProjectDetailsProps {
   projectData: Project;
@@ -31,9 +18,7 @@ export default function ProjectDetails({ projectData }: ProjectDetailsProps) {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('http://localhost:3000/projects.json', { cache: 'no-store' });
-        const data = await res.json();
-        const updatedProject = data.projects.find((project: Project) => project.id === projectData.id);
+        const updatedProject = await getProjectById(projectData.id); // Use getProjectById to fetch project
         if (!updatedProject) throw new Error('Project not found');
         setProject(updatedProject);
       } catch (err: any) {
