@@ -1,31 +1,27 @@
-// lib/projectService.ts
+// src/lib/projectService.ts
 
-import { Project } from './projectTypes'; // Adjust the import path as necessary
+import { Project } from './projectTypes'; //  Project structure 
 
 // Fetch all projects
 export async function getProjects(): Promise<Project[]> {
-  const res = await fetch('/api/projects'); // Fetch from the local API route
+  const res = await fetch('/api/projects');
   if (!res.ok) {
     throw new Error('Failed to fetch projects');
   }
   const data = await res.json();
-  return data.projects; // Return the projects array
+  return data.projects as Project[]; 
 }
 
-// lib/projectService.ts
-
+// Fetch a project by ID
 export async function getProjectById(id: string): Promise<Project | undefined> {
-  const projects = await getProjects(); // Get all projects
-  console.log('All Projects:', projects); // Log all projects
-  console.log('Searching for Project ID:', id); // Log the ID being searched
+  const projects = await getProjects();
+  console.log('All Projects:', projects);
+  console.log('Searching for Project ID:', id);
 
-  const project = projects.find((project: Project) => project.id === id); // Find the project by ID
-
+  const project = projects.find((project: Project) => project.id === id);
   if (!project) {
     console.warn(`Project with ID ${id} not found.`);
   }
 
-  return project; // Return the found project or undefined if not found
+  return project;
 }
-
-
