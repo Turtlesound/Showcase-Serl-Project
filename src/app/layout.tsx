@@ -64,6 +64,9 @@ export default function RootLayout({
               <Link href="/projects" className="hover:underline">
                 Projects
               </Link>
+              <Link href="/kiosk" className="hover:underline">
+                Kiosk
+              </Link>
             </nav>
           </div>
         </header>

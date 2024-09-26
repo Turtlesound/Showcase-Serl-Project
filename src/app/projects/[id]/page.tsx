@@ -1,34 +1,22 @@
-// /src/app/projects/[id]/page.tsx
+// src/app/projects/[id]/page.tsx
 
-import ProjectDetails from './ProjectDetails';
+import { getProjectById, getProjects, Project } from '@/lib/projectService'; // Import services
+import ProjectDetails from './ProjectDetails'; // Import ProjectDetails component
 
-async function getProjects() {
-  const res = await fetch('http://localhost:3000/projects.json', { cache: 'no-store' });
-  const data = await res.json();
-  return data.projects;
-}
-
+// Fetch and generate static params for dynamic routing
 export async function generateStaticParams() {
-  const projects = await getProjects();
+  const projects: Project[] = await getProjects(); // Fetch all projects
   return projects.map((project) => ({
-    id: project.id,
+    id: project.id, // Map each project to a path parameter
   }));
 }
 
-async function getProjectById(id) {
-  const projects = await getProjects();
-  return projects.find((project) => project.id === id);
-}
-
-export default async function Page({ params }) {
-  const project = await getProjectById(params.id);
+// Dynamic project details page component
+export default async function Page({ params }: { params: { id: string } }) {
+  const project: Project | undefined = await getProjectById(params.id);
 
   if (!project) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg font-medium text-red-600">Project not found.</p>
-      </div>
-    );
+    return <p>Project not found.</p>;
   }
 
   return <ProjectDetails projectData={project} />;
