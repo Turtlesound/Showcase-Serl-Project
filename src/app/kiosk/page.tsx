@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getProjects } from '@/lib/projectService'; // Only import the service
 import { Project } from '@/lib/projectTypes'; // Import the Project type
+import React from 'react'; // 
 
 export default function KioskPage() {
   const [projects, setProjects] = useState<Project[]>([]);
