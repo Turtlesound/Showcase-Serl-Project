@@ -8,26 +8,27 @@ export default function ProjectDetails({ projectData }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchProject = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch('http://localhost:3000/projects.json', { cache: 'no-store' });
-      const data = await res.json();
-      const updatedProject = data.projects.find((project) => project.id === projectData.id);
-      if (!updatedProject) throw new Error('Project not found');
-      setProject(updatedProject);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchProject = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('http://localhost:3000/projects.json', { cache: 'no-store' });
+        const data = await res.json();
+        const updatedProject = data.projects.find((project) => project.id === projectData.id);
+        if (!updatedProject) throw new Error('Project not found');
+        setProject(updatedProject);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const intervalId = setInterval(fetchProject, 60000); // Fetch every minute
+    fetchProject(); // Initial fetch
     return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [projectData.id]);
+  }, [projectData.id]); 
 
   if (loading) {
     return (
@@ -79,3 +80,6 @@ export default function ProjectDetails({ projectData }) {
     </div>
   );
 }
+
+
+

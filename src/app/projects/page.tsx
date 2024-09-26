@@ -3,11 +3,14 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+
+  const searchParams = useSearchParams(); // This hook reads the query parameters from the URL
+  const searchTerm = searchParams.get('search') || ''; 
 
   const fetchProjects = async () => {
     try {
@@ -20,11 +23,11 @@ export default function ProjectsPage() {
   };
 
   useEffect(() => {
-    fetchProjects(); // Initial fetch
+    fetchProjects(); // Fetch projects 
   }, []);
 
   useEffect(() => {
-    // Filter the projects based on the search term
+    // Filter the projects based on the search term from the URL
     const filtered = projects.filter((project) =>
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -33,7 +36,7 @@ export default function ProjectsPage() {
       project.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredProjects(filtered);
-  }, [searchTerm, projects]);
+  }, [searchTerm, projects]); // Re-filter whenever the search term or projects list changes
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -42,12 +45,14 @@ export default function ProjectsPage() {
           Project Showcase
         </h1>
 
-
         {filteredProjects.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 px-4">
             {filteredProjects.map((project) => (
-              // Wrap the whole card in Link to make the project clickable
-              <Link href={`/projects/${project.id}`} key={project.id} className="rounded-lg bg-white shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <Link
+                href={`/projects/${project.id}`}
+                key={project.id}
+                className="rounded-lg bg-white shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+              >
                 <div>
                   <Image
                     src={project.screenshots[0]}
