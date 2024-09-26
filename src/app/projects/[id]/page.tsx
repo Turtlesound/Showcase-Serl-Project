@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { getProjectById } from '@/lib/projectService'; // Only import the service
 import { Project } from '@/lib/projectTypes'; // Import the Project type
 
-// Define the component to receive `params` from Next.js dynamic routing
+// component to receive `params` from Next.js dynamic routing
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,11 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
 
       try {
         const data = await getProjectById(id); // Fetch the project by ID
-        setProject(data);
+        if (data) {
+          setProject(data); // Set the project if data is defined
+        } else {
+          setProject(null); // Explicitly set to null if data is undefined
+        }
       } catch (err: any) {
         setError('Error fetching project details');
       } finally {
