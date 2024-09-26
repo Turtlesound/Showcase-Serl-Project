@@ -3,6 +3,27 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
+// Define the type for the project data
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  screenshots: string[];
+  tags: string[];
+  type: string;
+  author: string;
+  created_at: string;
+  updated_at: string;
+  url: string;
+}
+
+
+interface ProjectDetailsProps {
+  projectData: Project;
+}
+
+
+
 export default function ProjectDetails({ projectData }) {
   const [project, setProject] = useState(projectData);
   const [loading, setLoading] = useState(false);
