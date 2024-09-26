@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation'; // For reading URL query params
 import { getProjects, Project } from '@/lib/projectService'; // Import the service
-import KioskProjectDetails from './KioskProjectDetails'; // Import KioskProjectDetails component
 
 export default function KioskPage() {
   const [projects, setProjects] = useState<Project[]>([]);
