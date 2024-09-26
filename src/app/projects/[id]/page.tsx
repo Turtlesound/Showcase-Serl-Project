@@ -2,7 +2,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getProjectById, Project } from '@/lib/projectService'; // Import the service
+import { getProjectById } from '@/lib/projectService'; // Only import the service
+import { Project } from '@/lib/projectTypes'; // Import the Project type
 
 // Define the component to receive `params` from Next.js dynamic routing
 export default function ProjectPage({ params }: { params: { id: string } }) {

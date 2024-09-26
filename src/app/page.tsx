@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'; // For reading URL query params
 import Image from 'next/image';
 import Link from 'next/link';
-import { getProjects } from '@/lib/projectService'; // Only import the service
-import { Project } from '@/lib/projectTypes'; // Import the Project type
+import { getProjects } from '@/lib/projectService'; 
+import { Project } from '@/lib/projectTypes'; 
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const searchParams = useSearchParams(); // Hook to get the query params
-  const searchTerm = searchParams.get('search') || ''; // Get search term from URL
+  const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
 
   useEffect(() => {
     const fetchProjects = async () => {
