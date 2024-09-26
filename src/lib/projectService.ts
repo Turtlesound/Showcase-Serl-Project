@@ -34,10 +34,8 @@ export async function getProjectById(id: string): Promise<Project | undefined> {
   const project = data.projects.find((project: Project) => project.id === id);
 
   if (!project) {
-    console.warn(`Project with ID ${id} not found. Available IDs:`, data.projects.map(p => p.id));
+    console.warn(`Project with ID ${id} not found. Available IDs:`, data.projects.map((p: Project) => p.id)); // Specify p's type here
   }
 
   return project; // Return the found project or undefined if not found
 }
-
-
