@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'; // For reading URL query params
 import Image from 'next/image';
 import Link from 'next/link';
-import { getProjects, Project } from '@/lib/projectService'; // Import the service
+import { getProjects } from '@/lib/projectService'; // Only import the service
+import { Project } from '@/lib/projectTypes'; // Import the Project type
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
