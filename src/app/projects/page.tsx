@@ -1,13 +1,14 @@
+// src/app/projects/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation'; // For reading URL query params
 import Image from 'next/image';
 import Link from 'next/link';
 import { getProjects } from '@/lib/projectService'; // Only import the service
 import { Project } from '@/lib/projectTypes'; // Import the Project type
 
-export default function ProjectsPage() {
+const ProjectsPageContent = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const searchParams = useSearchParams(); // Hook to get the query params
   const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
@@ -88,4 +89,14 @@ export default function ProjectsPage() {
       </div>
     </div>
   );
-}
+};
+
+const ProjectsPage = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading projects...</div>}>
+      <ProjectsPageContent />
+    </Suspense>
+  );
+};
+
+export default ProjectsPage;
