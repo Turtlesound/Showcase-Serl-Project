@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getProjects } from '@/lib/projectService'; // Only import the service
 import { Project } from '@/lib/projectTypes'; // Import the Project type
-import React from 'react'; // 
+import React from 'react'; 
 
 export default function KioskPage() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>(''); // Use this to manage search input
+  const [searchTerm, setSearchTerm] = useState<string>(''); // manage search input
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +30,18 @@ export default function KioskPage() {
 
   // Initial fetch of projects
   useEffect(() => {
-    fetchProjects(); // Initial fetch
+    fetchProjects(); 
+
+    // event listener for fullscreen change
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
   }, []);
 
   // Filter projects based on the search term
