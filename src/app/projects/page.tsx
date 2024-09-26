@@ -10,7 +10,7 @@ import { Project } from '@/lib/projectTypes'; // Import the Project type
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const searchParams = useSearchParams(); // Hook to get the query params
-  const searchTerm = searchParams.get('search') || ''; // Get search term from URL
+  const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
 
   useEffect(() => {
     const fetchProjects = async () => {
