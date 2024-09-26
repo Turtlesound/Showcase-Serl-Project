@@ -5,12 +5,13 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation'; // For reading URL query params
-import { getProjects, Project } from '@/lib/projectService'; // Import the service
+import { getProjects } from '@/lib/projectService'; // Only import the service
+import { Project } from '@/lib/projectTypes'; // Import the Project type
 
 export default function KioskPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const searchParams = useSearchParams();
-  const searchTerm = searchParams.get('search') || ''; // Get search term from URL
+  const searchTerm = searchParams.get('search') || '';
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
