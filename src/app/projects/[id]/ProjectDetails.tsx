@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Project, getProjectById } from '@/lib/projectService'; // Import the Project type and fetch function
 
 interface ProjectDetailsProps {
-  projectData: Project;
+  projectData: Project; // Expecting project data as a prop
 }
 
 export default function ProjectDetails({ projectData }: ProjectDetailsProps) {
@@ -20,11 +20,11 @@ export default function ProjectDetails({ projectData }: ProjectDetailsProps) {
       try {
         const updatedProject = await getProjectById(projectData.id); // Use getProjectById to fetch project
         if (!updatedProject) throw new Error('Project not found');
-        setProject(updatedProject);
+        setProject(updatedProject); // Update the project state
       } catch (err: any) {
-        setError(err.message);
+        setError(err.message); // Set error state
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading
       }
     };
 
@@ -33,6 +33,7 @@ export default function ProjectDetails({ projectData }: ProjectDetailsProps) {
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, [projectData.id]);
 
+  // Render loading and error states
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -49,12 +50,13 @@ export default function ProjectDetails({ projectData }: ProjectDetailsProps) {
     );
   }
 
+  // Render project details
   return (
     <div className="min-h-screen p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div className="mb-6">
           <Image
-            src={project.screenshots[0]}
+            src={project.screenshots[0]} // Render project image
             alt={project.title}
             width={400}  
             height={250} 
