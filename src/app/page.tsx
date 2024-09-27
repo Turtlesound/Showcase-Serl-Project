@@ -24,7 +24,7 @@ const ProjectsPageContent = () => {
     };
 
     fetchProjects();
-    const intervalId = setInterval(fetchProjects, 60000); // Refetch every minute
+    const intervalId = setInterval(fetchProjects, 30000); // Refetch every minute
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
@@ -66,6 +66,7 @@ const ProjectsPageContent = () => {
                     </h2>
                     <p className="text-gray-600">{project.description}</p>
                     <p className="text-sm text-gray-500 mt-2">Type: {project.type}</p>
+                    <p className="text-sm text-gray-500 mb-2">Tags: {project.tags.join(', ')}</p>
                   </div>
                 </Link>
                 <div className="p-6">

@@ -1,0 +1,110 @@
+{
+    "projects": [
+      {
+        "id": "rejoinderoo",
+        "title": "Rejoinderoo",
+        "description": "A utility for joining remote work sessions.",
+        "type": "research",
+        "tags": ["remote", "workspace", "automation"],
+        "screenshots": [
+          "https://raw.githubusercontent.com/andreas-bauer/rejoinderoo/main/images/logo.png",
+          "https://raw.githubusercontent.com/andreas-bauer/rejoinderoo/main/images/screenshot.png"
+        ],
+        "url": "https://github.com/andreas-bauer/rejoinderoo",
+        "created_at": "2024-09-16T00:00:00Z",
+        "updated_at": "2024-09-16T00:00:00Z",
+        "author": "Andreas Bauer"
+      },
+      {
+        "id": "credit-maker",
+        "title": "Credit Maker",
+        "description": "Tool for creating and managing digital credits.",
+        "type": "student",
+        "tags": ["credit", "management", "tool"],
+        "screenshots": [
+          "https://raw.githubusercontent.com/andreas-bauer/credit-maker/main/screenshot.png",
+          "https://raw.githubusercontent.com/andreas-bauer/credit-maker/main/src/images/robot-logo128.png"
+        ],
+        "url": "https://github.com/andreas-bauer/credit-maker",
+        "created_at": "2024-09-16T00:00:00Z",
+        "updated_at": "2024-09-16T00:00:00Z",
+        "author": "Andreas Bauer"
+      },
+      {
+        "id": "test-project",
+        "title": "Test Project",
+        "description": "A project to showcase testing functionalities.",
+        "type": "testing",
+        "tags": ["test", "example", "demo"],
+        "screenshots": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s"
+        ],
+        "url": "https://github.com/andreas-bauer/test-project",
+        "created_at": "2024-09-17T00:00:00Z",
+        "updated_at": "2024-09-17T00:00:00Z",
+        "author": "Robin Svensson"
+      },
+      {
+        "id": "data-visualizer",
+        "title": "Data Visualizer",
+        "description": "A tool for visualizing complex datasets.",
+        "type": "research",
+        "tags": ["data", "visualization", "charts"],
+        "screenshots": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s"
+        ],
+        "url": "https://github.com/andreas-bauer/data-visualizer",
+        "created_at": "2024-09-18T00:00:00Z",
+        "updated_at": "2024-09-18T00:00:00Z",
+        "author": "Jessica Lee"
+      },
+      {
+        "id": "project-management-tool",
+        "title": "Project Management Tool",
+        "description": "A comprehensive tool for managing projects effectively.",
+        "type": "student",
+        "tags": ["project", "management", "tool"],
+        "screenshots": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s"
+        ],
+        "url": "https://github.com/andreas-bauer/project-management-tool",
+        "created_at": "2024-09-19T00:00:00Z",
+        "updated_at": "2024-09-19T00:00:00Z",
+        "author": "Michael Chen"
+      },
+      {
+        "id": "web-scraper",
+        "title": "Web Scraper",
+        "description": "A tool for scraping data from websites.",
+        "type": "development",
+        "tags": ["scraper", "data", "automation"],
+        "screenshots": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHB7S9nyS5nipuKhHPxpCgSjgp6O2IUS_Rpw&s"
+        ],
+        "url": "https://github.com/andreas-bauer/web-scraper",
+        "created_at": "2024-09-20T00:00:00Z",
+        "updated_at": "2024-09-20T00:00:00Z",
+        "author": "Alice Johnson"
+      },
+      {
+        "id": "pokedex",
+        "title": "Pokedex",
+        "description": "A simple Pokedex application to view Pokémon information.",
+        "type": "development",
+        "tags": ["pokedex", "pokemon", "api"],
+        "screenshots": [
+          "https://raw.githubusercontent.com/bth-dipt-teaching/pokedex/refs/heads/main/assets/screenshots/dark/1.png",
+          "https://raw.githubusercontent.com/bth-dipt-teaching/pokedex/refs/heads/main/assets/screenshots/dark/2.png"
+        ],
+        "url": "https://github.com/bth-dipt-teaching/pokedex",
+        "created_at": "2024-09-25T00:00:00Z",
+        "updated_at": "2024-09-25T00:00:00Z",
+        "author": "Andreas Bauer" 
+      }
+    ]
+  }
+  
