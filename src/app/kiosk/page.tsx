@@ -101,14 +101,24 @@ export default function KioskPage() {
     );
   }
 
-  // No projects found
-  if (filteredProjects.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg text-gray-600">No projects found.</p>
+// No projects found
+if (filteredProjects.length === 0) {
+  return (
+    <div className="min-h-screen p-8  ">
+      <div className="mb-6 w-full md:w-1/2">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search projects..."
+          className="border border-gray-300 rounded-md p-2 w-full"
+        />
       </div>
-    );
-  }
+      <p className="text-lg text-gray-600">No projects found.</p>
+    </div>
+  );
+}
+
 
   // Render the current project details
   return (
