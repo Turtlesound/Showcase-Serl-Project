@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation'; // For reading URL query params
+import { useSearchParams, useRouter } from 'next/navigation'; // useRouter to navigate
 import Image from 'next/image';
 import Link from 'next/link';
 import { getProjects } from '@/lib/projectService'; // Only import the service
@@ -11,6 +11,7 @@ const ProjectsPageContent = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const searchParams = useSearchParams(); // Hook to get the query params
   const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
+  const router = useRouter(); // For programmatic navigation
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -23,7 +24,7 @@ const ProjectsPageContent = () => {
     };
 
     fetchProjects();
-    const intervalId = setInterval(fetchProjects, 30000); // Refetch every minute
+    const intervalId = setInterval(fetchProjects, 30000); // Refetch every 30 seconds
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
@@ -35,6 +36,13 @@ const ProjectsPageContent = () => {
     project.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
     project.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Navigate to the projects page with a specific tag as a search parameter
+  const handleTagClick = (event: React.MouseEvent, tag: string) => {
+    event.preventDefault(); // Prevent the default link behavior
+    event.stopPropagation(); // Stop the click event from propagating to the parent link
+    router.push(`/projects?search=${tag}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -60,7 +68,7 @@ const ProjectsPageContent = () => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="rounded-lg bg-white shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:shadow-xl hover:outline hover:outline-grey-500 hover:outline-2"
+                className="rounded-lg bg-white shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:shadow-xl"
               >
                 <Link href={`/projects/${project.id}`} className="block">
                   <Image
@@ -76,7 +84,19 @@ const ProjectsPageContent = () => {
                     </h2>
                     <p className="text-gray-600">{project.description}</p>
                     <p className="text-sm text-gray-500 mt-2">Type: {project.type}</p>
-                    <p className="text-sm text-gray-500 mb-2">Tags: {project.tags.join(', ')}</p>
+
+                    {/* Clickable Tags */}
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          onClick={(event) => handleTagClick(event, tag)}
+                          className="text-blue-500 hover:underline cursor-pointer text-sm"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </Link>
                 <div className="p-6">
