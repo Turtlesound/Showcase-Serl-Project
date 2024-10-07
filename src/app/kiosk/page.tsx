@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { getProjects } from '@/lib/projectService'; // Only import the service
 import { Project } from '@/lib/projectTypes'; // Import the Project type
 import React from 'react'; 
+import { QRCodeSVG } from 'qrcode.react'; 
 
 export default function KioskPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -101,24 +102,23 @@ export default function KioskPage() {
     );
   }
 
-// No projects found
-if (filteredProjects.length === 0) {
-  return (
-    <div className="min-h-screen p-8  ">
-      <div className="mb-6 w-full md:w-1/2">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Search projects..."
-          className="border border-gray-300 rounded-md p-2 w-full"
-        />
+  // No projects found
+  if (filteredProjects.length === 0) {
+    return (
+      <div className="min-h-screen p-8">
+        <div className="mb-6 w-full md:w-1/2">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search projects..."
+            className="border border-gray-300 rounded-md p-2 w-full"
+          />
+        </div>
+        <p className="text-lg text-gray-600">No projects found.</p>
       </div>
-      <p className="text-lg text-gray-600">No projects found.</p>
-    </div>
-  );
-}
-
+    );
+  }
 
   // Render the current project details
   return (
@@ -178,14 +178,22 @@ if (filteredProjects.length === 0) {
             <p className="text-sm text-gray-600 mb-2">Author: <span className="font-semibold">{currentProject.author}</span></p>
             <p className="text-sm text-gray-600 mb-2">Created: <span className="font-semibold">{new Date(currentProject.created_at).toLocaleDateString()}</span></p>
             <p className="text-sm text-gray-600 mb-2">Updated: <span className="font-semibold">{new Date(currentProject.updated_at).toLocaleDateString()}</span></p>
-            <a
-              href={currentProject.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-4 text-blue-500 hover:underline text-lg font-semibold"
-            >
-              Visit Project
-            </a>
+
+            <div className="flex items-center mt-4">
+              <a
+                href={currentProject.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline text-lg font-semibold"
+              >
+                Visit Project
+              </a>
+              
+                  {/* QR Code for the project URL */}
+                    <div className="ml-4">
+                  <QRCodeSVG value={currentProject.url} size={100} />
+              </div>
+            </div>
           </div>
         )}
       </div>

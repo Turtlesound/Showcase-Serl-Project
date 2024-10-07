@@ -11,21 +11,23 @@
     "format:fix": "prettier --write --ignore-path .gitignore --list-different ."
   },
   "dependencies": {
+    "next": "^14.2.14",
+    "qrcode.react": "^4.0.1",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.8"
+    "react-qr-code": "^2.0.15"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.8",
+    "eslint-config-prettier": "^9.1.0",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.13",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-next": "14.2.8"
+    "typescript": "^5"
   }
 }

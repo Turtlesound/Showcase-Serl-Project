@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getProjectById } from '@/lib/projectService'; // Only import the service
 import { Project } from '@/lib/projectTypes'; // Import the Project type
+import { QRCodeSVG } from 'qrcode.react'; 
 
 // component to receive `params` from Next.js dynamic routing
 export default function ProjectPage({ params }: { params: { id: string } }) {
@@ -127,7 +128,12 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
             className="inline-block mt-4 text-blue-500 hover:underline text-lg font-semibold"
           >
             Visit Project
+            
           </a>
+              {/* QR Code for the project URL */}
+                  <div className="mb-4">
+                <QRCodeSVG value={project.url} size={100} />
+            </div>
         </div>
       </div>
     </div>
