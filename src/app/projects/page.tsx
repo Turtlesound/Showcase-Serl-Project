@@ -37,11 +37,17 @@ const ProjectsPageContent = () => {
     project.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Navigate to the projects page with a specific tag as a search parameter
+  // Navigate to the projects page with a specific tag or type as a search parameter
   const handleTagClick = (event: React.MouseEvent, tag: string) => {
     event.preventDefault(); // Prevent the default link behavior
     event.stopPropagation(); // Stop the click event from propagating to the parent link
     router.push(`/projects?search=${tag}`);
+  };
+
+  const handleTypeClick = (event: React.MouseEvent, type: string) => {
+    event.preventDefault(); // Prevent the default link behavior
+    event.stopPropagation(); // Stop the click event from propagating to the parent link
+    router.push(`/projects?search=${type}`);
   };
 
   return (
@@ -83,7 +89,17 @@ const ProjectsPageContent = () => {
                       {project.title}
                     </h2>
                     <p className="text-gray-600">{project.description}</p>
-                    <p className="text-sm text-gray-500 mt-2">Type: {project.type}</p>
+
+                    {/* Clickable Type */}
+                    <p className="text-sm text-gray-500 mt-2">
+                      Type:{' '}
+                      <span
+                        onClick={(event) => handleTypeClick(event, project.type)}
+                        className="text-blue-500 hover:underline cursor-pointer"
+                      >
+                        {project.type}
+                      </span>
+                    </p>
 
                     {/* Clickable Tags */}
                     <div className="flex flex-wrap gap-2 mb-2">
