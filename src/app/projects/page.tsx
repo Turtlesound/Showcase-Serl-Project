@@ -102,7 +102,8 @@ const ProjectsPageContent = () => {
                     </p>
 
                     {/* Clickable Tags */}
-                    <div className="flex flex-wrap gap-2 mb-2">
+                    <div className="text-sm text-gray-500 flex flex-wrap gap-1 mb-2">
+                      Tags:{' '}
                       {project.tags.map((tag) => (
                         <span
                           key={tag}

@@ -11,7 +11,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const router = useRouter(); // For tag navigation
+  const router = useRouter(); // For tag and type navigation
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -63,9 +63,13 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     );
   }
 
-  // Navigate to the projects page with a specific tag as a search parameter
+  // Navigate to the projects page with a specific tag or type as a search parameter
   const handleTagClick = (tag: string) => {
     router.push(`/projects?search=${tag}`);
+  };
+
+  const handleTypeClick = (type: string) => {
+    router.push(`/projects?search=${type}`);
   };
 
   return (
@@ -104,10 +108,21 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
         <div>
           <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
           <p className="text-lg mb-4">{project.description}</p>
-          <p className="italic text-sm text-gray-600 mb-2">Type: {project.type}</p>
+
+          {/* Clickable Type */}
+          <p className="text-sm text-gray-600 mb-2">
+            Type:{" "}
+            <span
+              onClick={() => handleTypeClick(project.type)}
+              className="text-blue-500 hover:underline cursor-pointer"
+            >
+              {project.type}
+            </span>
+          </p>
 
           {/* Clickable Tags */}
-          <div className="flex flex-wrap gap-2 mb-2">
+          <div className="text-sm text-gray-500 flex flex-wrap gap-2 mb-2">
+            Tags:{" "}
             {project.tags.map((tag) => (
               <span
                 key={tag}
@@ -119,9 +134,21 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
             ))}
           </div>
 
-          <p className="text-sm text-gray-600 mb-2">Author: <span className="font-semibold">{project.author}</span></p>
-          <p className="text-sm text-gray-600 mb-2">Created: <span className="font-semibold">{new Date(project.created_at).toLocaleDateString()}</span></p>
-          <p className="text-sm text-gray-600 mb-2">Updated: <span className="font-semibold">{new Date(project.updated_at).toLocaleDateString()}</span></p>
+          <p className="text-sm text-gray-600 mb-2">
+            Author: <span className="font-semibold">{project.author}</span>
+          </p>
+          <p className="text-sm text-gray-600 mb-2">
+            Created:{" "}
+            <span className="font-semibold">
+              {new Date(project.created_at).toLocaleDateString()}
+            </span>
+          </p>
+          <p className="text-sm text-gray-600 mb-2">
+            Updated:{" "}
+            <span className="font-semibold">
+              {new Date(project.updated_at).toLocaleDateString()}
+            </span>
+          </p>
           <a
             href={project.url}
             target="_blank"
