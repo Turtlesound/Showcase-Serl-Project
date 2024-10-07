@@ -1,4 +1,3 @@
-// src/app/projects/page.tsx
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
@@ -43,6 +42,17 @@ const ProjectsPageContent = () => {
         <h1 className="text-4xl font-extrabold text-gray-800 text-center mb-12">
           Project Showcase
         </h1>
+
+        {/* Display the number of filtered projects */}
+        <div className="text-center mb-4">
+          {filteredProjects.length > 0 ? (
+            <p className="text-lg text-gray-600">
+              {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found.
+            </p>
+          ) : (
+            <p className="text-lg text-gray-600">No projects found.</p>
+          )}
+        </div>
 
         {/* Display filtered projects */}
         {filteredProjects.length > 0 ? (
