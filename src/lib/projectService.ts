@@ -1,27 +1,31 @@
-// src/lib/projectService.ts
+import { Project } from './projectTypes';
 
-import { Project } from './projectTypes'; //  Project structure 
-
-// Fetch all projects
+// Fetch all projects from API
 export async function getProjects(): Promise<Project[]> {
   const res = await fetch('/api/projects');
   if (!res.ok) {
     throw new Error('Failed to fetch projects');
   }
   const data = await res.json();
-  return data.projects as Project[]; 
+  return data.projects as Project[];
 }
 
-// Fetch a project by ID
+// Fetch projects sorted by creation  
+export const getProjectsCreated = async () => {
+  const projects = await getProjects(); 
+  return projects.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+};
+
+// Fetch projects sorted by updated  
+export const getProjectsUpdated = async () => {
+  const projects = await getProjects();
+  // Sort by updated date
+  return projects.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+};
+
+// Fetch a specific project by ID
 export async function getProjectById(id: string): Promise<Project | undefined> {
   const projects = await getProjects();
-  console.log('All Projects:', projects);
-  console.log('Searching for Project ID:', id);
-
   const project = projects.find((project: Project) => project.id === id);
-  if (!project) {
-    console.warn(`Project with ID ${id} not found.`);
-  }
-
   return project;
 }

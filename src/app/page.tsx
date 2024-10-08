@@ -1,113 +1,135 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation'; // For reading URL query params
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { getProjectsCreated, getProjectsUpdated } from '@/lib/projectService'; // Import the new service functions
+import { Project } from '@/lib/projectTypes';
 import Link from 'next/link';
-import { getProjects } from '@/lib/projectService'; // Only import the service
-import { Project } from '@/lib/projectTypes'; // Import the Project type
+import { useRouter } from 'next/navigation';
+import Image from 'next/image'; // Import Image
 
-const ProjectsPageContent = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const searchParams = useSearchParams(); // Hook to get the query params
-  const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
+export default function HomePage() {
+  const [recentProjects, setRecentProjects] = useState<Project[]>([]);
+  const [updatedProjects, setUpdatedProjects] = useState<Project[]>([]);
+  const [popularTags, setPopularTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const data = await getProjects(); // Fetch all projects
-        setProjects(data);
-      } catch (error) {
-        console.error('Error fetching projects:', error);
+        const createdProjects = await getProjectsCreated(); // Fetch recently created projects
+        const updatedProjects = await getProjectsUpdated(); // Fetch recently updated projects
+        setRecentProjects(createdProjects.slice(0, 6)); // Limit to top 6 recent projects
+        setUpdatedProjects(updatedProjects.slice(0, 6)); // Limit to top 6 updated projects
+
+        // Collect tags from both lists and calculate their frequency
+        const allProjects = [...createdProjects, ...updatedProjects];
+        const tagFrequency: { [tag: string]: number } = {};
+        allProjects.forEach((project) => {
+          project.tags.forEach((tag) => {
+            tagFrequency[tag] = (tagFrequency[tag] || 0) + 1;
+          });
+        });
+
+        // Sort tags by frequency and pick the top 5
+        const sortedTags = Object.entries(tagFrequency)
+          .sort(([, a], [, b]) => b - a)
+          .slice(0, 5)
+          .map(([tag]) => tag);
+
+        setPopularTags(sortedTags);
+      } catch (err) {
+        setError('Error loading projects');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchProjects();
-    const intervalId = setInterval(fetchProjects, 30000); // Refetch every minute
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    fetchData();
   }, []);
 
-  // Filter projects based on the search term from URL query params
-  const filteredProjects = projects.filter((project) =>
-    project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    project.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Navigate to the projects page with a specific tag
+  const handleTagClick = (tag: string) => {
+    router.push(`/projects?search=${tag}`);
+  };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center">{error}</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="py-8">
-        <h1 className="text-4xl font-extrabold text-gray-800 text-center mb-12">
-          Project Showcase
-        </h1>
+    <div className="min-h-screen p-8">
+      <h1 className="text-4xl font-extrabold text-center mb-12">Welcome to Project Showcase</h1>
 
-        {/* Display the number of filtered projects */}
-        <div className="text-center mb-4">
-          {filteredProjects.length > 0 ? (
-            <p className="text-lg text-gray-600">
-              {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found.
-            </p>
-          ) : (
-            <p className="text-lg text-gray-600">No projects found.</p>
-          )}
-        </div>
-
-        {/* Display filtered projects */}
-        {filteredProjects.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 px-4">
-            {filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="rounded-lg bg-white shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:shadow-xl hover:outline hover:outline-grey-500 hover:outline-2"
-              >
-                <Link href={`/projects/${project.id}`} className="block">
-                  <Image
-                    src={project.screenshots[0]}
-                    alt={project.title}
-                    width={500}
-                    height={250}
-                    className="object-cover w-full h-48"
-                  />
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                      {project.title}
-                    </h2>
-                    <p className="text-gray-600">{project.description}</p>
-                    <p className="text-sm text-gray-500 mt-2">Type: {project.type}</p>
-                    <p className="text-sm text-gray-500 mb-2">Tags: {project.tags.join(', ')}</p>
-                  </div>
-                </Link>
-                <div className="p-6">
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    Visit Project
-                  </a>
+      {/* Recently Added Projects */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-4">Recently Added Projects</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recentProjects.map((project) => (
+            <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <Link href={`/projects/${project.id}`}>
+                <Image
+                  src={project.screenshots[0]}
+                  alt={project.title}
+                  width={500}
+                  height={250}
+                  className="object-cover w-full h-48"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold">{project.title}</h3>
+                  <p className="text-gray-600">{project.description}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center py-24">
-            <p className="text-lg text-gray-600">No projects found.</p>
-          </div>
-        )}
-      </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Recently Updated Projects */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-4">Recently Updated Projects</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {updatedProjects.map((project) => (
+            <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <Link href={`/projects/${project.id}`}>
+                <Image
+                  src={project.screenshots[0]}
+                  alt={project.title}
+                  width={500}
+                  height={250}
+                  className="object-cover w-full h-48"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold">{project.title}</h3>
+                  <p className="text-gray-600">{project.description}</p>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Popular Tags Section */}
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Popular Tags</h2>
+        <div className="flex flex-wrap gap-2">
+          {popularTags.map((tag) => (
+            <span
+              key={tag}
+              onClick={() => handleTagClick(tag)}
+              className="text-blue-500 hover:underline cursor-pointer text-lg"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </section>
     </div>
   );
-};
-
-const ProjectsPage = () => {
-  return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading projects...</div>}>
-      <ProjectsPageContent />
-    </Suspense>
-  );
-};
-
-export default ProjectsPage;
+}
