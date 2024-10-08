@@ -61,10 +61,10 @@ const ProjectsPageContent = () => {
         <div className="text-center mb-4">
           {filteredProjects.length > 0 ? (
             <p className="text-lg text-gray-600">
-              {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found.
+              {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found with {searchTerm}.
             </p>
           ) : (
-            <p className="text-lg text-gray-600">No projects found.</p>
+            <p className="text-lg text-gray-600">No projects found with {searchTerm}.</p>
           )}
         </div>
 
@@ -88,7 +88,9 @@ const ProjectsPageContent = () => {
                     <h2 className="text-xl font-semibold text-gray-800 mb-2">
                       {project.title}
                     </h2>
-                    <p className="text-gray-600">{project.description}</p>
+                    <p className="text-gray-600">
+                    {project.description.length > 100 ? project.description.slice(0, 100) + '...' : project.description}
+                    </p>
 
                     {/* Clickable Type */}
                     <p className="text-sm text-gray-500 mt-2">
