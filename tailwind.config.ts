@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -22,7 +23,7 @@ const config: Config = {
         'screen-2xl': '1536px', // Extra extra large screens
         'full': '70%', // Full width
       },
-      typography: (theme) => ({
+      typography: (theme: (key: string) => string) => ({
         DEFAULT: {
           css: {
             color: theme('colors.foreground'),
