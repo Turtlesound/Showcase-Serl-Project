@@ -1,6 +1,12 @@
 declare module 'dompurify' {
-    const DOMPurify: {
-    sanitize: (dirty: string, options?: any) => string;
+    export type DOMPurifyOptions = {
+        ALLOWED_TAGS?: string[];
+        ALLOWED_ATTR?: string[];
     };
-    export default DOMPurify;
+
+    export function sanitize(_dirty: string, _options?: DOMPurifyOptions): string; // Rename parameters
+
+    export function setConfig(options: DOMPurifyOptions): void;
+
+    export function isSupported(): boolean;
 }
