@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function HomePage() {
-  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
+  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]); // Initialize to an empty array
   const [recentProjects, setRecentProjects] = useState<Project[]>([]);
   const [updatedProjects, setUpdatedProjects] = useState<Project[]>([]);
   const [popularTags, setPopularTags] = useState<string[]>([]);
@@ -47,6 +47,7 @@ export default function HomePage() {
 
         setPopularTags(sortedTags);
       } catch (err) {
+        console.error(err); // Log the error for debugging
         setError('Error loading projects');
       } finally {
         setLoading(false);
@@ -99,25 +100,32 @@ export default function HomePage() {
 
         {/* Display the projects based on activeTab */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayedProjects.map((project) => (
-            <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <Link href={`/projects/${project.id}`}>
-                <Image
-                  src={project.screenshots[0]}
-                  alt={project.title}
-                  width={500}
-                  height={250}
-                  className="object-cover w-full h-48"
-                />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold">{project.title}</h3>
-                  <p className="text-gray-600">
-                    {project.description.length > 100 ? project.description.slice(0, 100) + '...' : project.description}
-                  </p>
-                </div>
-              </Link>
-            </div>
-          ))}
+          {displayedProjects.length > 0 ? (
+            displayedProjects.map((project) => (
+              <div key={project.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <Link href={`/projects/${project.id}`}>
+                  <Image
+                    src={project.screenshots[0] || '/default-image.jpg'} // Add a default image if none exists
+                    alt={project.title}
+                    width={500}
+                    height={250}
+                    className="object-cover w-full h-48"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold">{project.title}</h3>
+                    <p className="text-gray-600">
+                      {project.description?.length > 100
+                        ? project.description.slice(0, 100) + '...'
+                        : project.description || 'No description available.' // Fallback for null description
+                      }
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-500">No projects available.</div>
+          )}
         </div>
       </div>
 

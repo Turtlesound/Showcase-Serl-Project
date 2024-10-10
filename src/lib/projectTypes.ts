@@ -10,4 +10,5 @@ export interface Project {
     created_at: string;
     updated_at: string;
     author: string;
+    description_long: string; 
 }

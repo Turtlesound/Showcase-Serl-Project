@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation'; // useRouter to navigate
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +8,7 @@ import { getProjects } from '@/lib/projectService'; // Only import the service
 import { Project } from '@/lib/projectTypes'; // Import the Project type
 
 const ProjectsPageContent = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]); // Initialize projects as an empty array
   const searchParams = useSearchParams(); // Hook to get the query params
   const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
   const router = useRouter(); // For programmatic navigation
@@ -18,7 +17,7 @@ const ProjectsPageContent = () => {
     const fetchProjects = async () => {
       try {
         const data = await getProjects(); // Fetch all projects
-        setProjects(data);
+        setProjects(data); // Ensure data is valid before setting
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -34,8 +33,8 @@ const ProjectsPageContent = () => {
     project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
     project.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.description.toLowerCase().includes(searchTerm.toLowerCase())
+    (project.author && project.author.toLowerCase().includes(searchTerm.toLowerCase())) || // Check for null or undefined
+    (project.description && project.description.toLowerCase().includes(searchTerm.toLowerCase())) // Check for null or undefined
   );
 
   // Navigate to the projects page with a specific tag or type as a search parameter
@@ -62,10 +61,13 @@ const ProjectsPageContent = () => {
         <div className="text-center mb-4">
           {filteredProjects.length > 0 ? (
             <p className="text-lg text-gray-600">
-              {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found with {searchTerm}.
+              {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found
+              {searchTerm ? ` with "${searchTerm}".` : '.'}
             </p>
           ) : (
-            <p className="text-lg text-gray-600">No projects found with {searchTerm}.</p>
+            <p className="text-lg text-gray-600">
+              {searchTerm ? `No projects found with "${searchTerm}".` : `No projects found.`}
+            </p>
           )}
         </div>
 
@@ -79,7 +81,7 @@ const ProjectsPageContent = () => {
               >
                 <Link href={`/projects/${project.id}`} className="block">
                   <Image
-                    src={project.screenshots[0]}
+                    src={project.screenshots[0] || '/default-image.jpg'} // Fallback to a default image if none exists
                     alt={project.title}
                     width={500}
                     height={250}
@@ -90,7 +92,9 @@ const ProjectsPageContent = () => {
                       {project.title}
                     </h2>
                     <p className="text-gray-600">
-                    {project.description.length > 100 ? project.description.slice(0, 100) + '...' : project.description}
+                      {project.description?.length > 100 
+                        ? project.description.slice(0, 100) + '...' 
+                        : project.description || 'No description available.'} 
                     </p>
 
                     {/* Clickable Type */}
