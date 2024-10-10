@@ -1,12 +1,15 @@
 declare module 'dompurify' {
     export type DOMPurifyOptions = {
-        ALLOWED_TAGS?: string[];
-        ALLOWED_ATTR?: string[];
+        ALLOWED_TAGS?: string[];   // Array of allowed HTML tags
+        ALLOWED_ATTR?: string[];   // Array of allowed attributes
     };
 
-    export function sanitize(_dirty: string, _options?: DOMPurifyOptions): string; // Use _dirty and _options
+    // Sanitizes the input string by removing disallowed tags and attributes
+    export function sanitize(dirty: string, _options?: DOMPurifyOptions): string;
 
-    export function setConfig(options: DOMPurifyOptions): void;
+    // Sets global configuration options for DOMPurify
+    export function setConfig(_options: DOMPurifyOptions): void; // Renamed to _options
 
+    // Checks if the current browser supports DOMPurify
     export function isSupported(): boolean;
 }
