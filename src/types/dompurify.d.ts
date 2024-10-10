@@ -4,7 +4,7 @@ declare module 'dompurify' {
         ALLOWED_ATTR?: string[];
     };
 
-    export function sanitize(dirty: string, _options?: DOMPurifyOptions): string; // Use _options
+    export function sanitize(_dirty: string, _options?: DOMPurifyOptions): string; // Use _dirty and _options
 
     export function setConfig(options: DOMPurifyOptions): void;
 
