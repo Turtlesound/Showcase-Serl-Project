@@ -11,17 +11,33 @@ const config: Config = {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
-        accent: '#3b82f6', // You can add more colors as needed
+        accent: '#3b82f6', // Main accent color
+        'light-blue': '#bfdbfe', // Light blue for hover states
+        'dark-blue': '#1e3a8a', // Dark blue for headers and footers
+        'gray-light': '#f9fafb', // Light gray for backgrounds
+      },
+      maxWidth: {
+        'screen-lg': '1024px', // Large screens
+        'screen-xl': '1280px', // Extra large screens
+        'screen-2xl': '1536px', // Extra extra large screens
+        'full': '70%', // Full width
       },
       typography: (theme) => ({
         DEFAULT: {
           css: {
             color: theme('colors.foreground'),
+            h1: {
+              color: theme('colors.dark-blue'),
+              fontWeight: 'bold',
+            },
+            h2: {
+              color: theme('colors.dark-blue'),
+            },
             a: {
               color: theme('colors.accent'),
               textDecoration: 'underline',
               '&:hover': {
-                color: theme('colors.accent'),
+                color: theme('colors.light-blue'),
                 textDecoration: 'none',
               },
             },
@@ -33,7 +49,7 @@ const config: Config = {
               borderRadius: '0.25rem',
               padding: '0.2rem 0.4rem',
               margin: '0',
-              display: 'inline', // Ensures it behaves like an inline element
+              display: 'inline',
             },
             blockquote: {
               borderLeftColor: theme('colors.accent'),
@@ -46,7 +62,6 @@ const config: Config = {
               borderRadius: '0.25rem',
               color: theme('colors.gray.800'),
             },
-            // Other styles...
           },
         },
       }),

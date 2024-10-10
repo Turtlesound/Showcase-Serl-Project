@@ -9,6 +9,7 @@ import { Project } from '@/lib/projectTypes'; // Import the Project type
 
 const ProjectsPageContent = () => {
   const [projects, setProjects] = useState<Project[]>([]); // Initialize projects as an empty array
+  const [tagFrequency, setTagFrequency] = useState<{ [tag: string]: number }>({}); // State for tag frequency
   const searchParams = useSearchParams(); // Hook to get the query params
   const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
   const router = useRouter(); // For programmatic navigation
@@ -18,6 +19,15 @@ const ProjectsPageContent = () => {
       try {
         const data = await getProjects(); // Fetch all projects
         setProjects(data); // Ensure data is valid before setting
+
+        // Calculate tag frequency
+        const frequency: { [tag: string]: number } = {};
+        data.forEach(project => {
+          project.tags.forEach(tag => {
+            frequency[tag] = (frequency[tag] || 0) + 1;
+          });
+        });
+        setTagFrequency(frequency);
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -76,64 +86,67 @@ const ProjectsPageContent = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 px-4">
             {filteredProjects.map((project) => (
               <div
-                key={project.id}
-                className="rounded-lg bg-white shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:shadow-xl"
-              >
-                <Link href={`/projects/${project.id}`} className="block">
-                  <Image
-                    src={project.screenshots[0] || '/default-image.jpg'} // Fallback to a default image if none exists
-                    alt={project.title}
-                    width={500}
-                    height={250}
-                    className="object-cover w-full h-48"
-                  />
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                      {project.title}
-                    </h2>
-                    <p className="text-gray-600">
-                      {project.description?.length > 100 
-                        ? project.description.slice(0, 100) + '...' 
-                        : project.description || 'No description available.'} 
-                    </p>
-
-                    {/* Clickable Type */}
-                    <p className="text-sm text-gray-500 mt-2">
-                      Type:{' '}
-                      <span
-                        onClick={(event) => handleTypeClick(event, project.type)}
-                        className="text-blue-500 hover:underline cursor-pointer"
-                      >
-                        {project.type}
-                      </span>
-                    </p>
-
-                    {/* Clickable Tags */}
-                    <div className="text-sm text-gray-500 flex flex-wrap gap-1 mb-2">
-                      Tags:{' '}
-                      {project.tags.map((tag) => (
+              key={project.id}
+              className="flex flex-col rounded-lg bg-white shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:shadow-xl"
+            >
+              <Link href={`/projects/${project.id}`} className="block flex-grow">
+                <Image
+                  src={project.screenshots[0] || '/default-image.jpg'}
+                  alt={project.title}
+                  width={500}
+                  height={250}
+                  className="object-contain w-full h-48"
+                />
+                <div className="p-6 flex-grow">
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                    {project.title}
+                  </h2>
+                  <p className="text-gray-600">
+                    {project.description?.length > 100 
+                      ? project.description.slice(0, 100) + '...' 
+                      : project.description || 'No description available.'} 
+                  </p>
+            
+                  {/* Clickable Type */}
+                  <p className="text-sm text-gray-500 mt-2">
+                    Type:{' '}
+                    <span
+                      onClick={(event) => handleTypeClick(event, project.type)}
+                      className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
+                    >
+                      {project.type}
+                    </span>
+                  </p>
+            
+                  {/* Clickable Tags */}
+                  <div className="text-sm text-gray-500 flex flex-wrap gap-1 mb-2">
+                    Tags:{' '}
+                    {project.tags
+                      .sort((a, b) => (tagFrequency[b] || 0) - (tagFrequency[a] || 0))
+                      .slice(0, 5)
+                      .map((tag) => (
                         <span
                           key={tag}
                           onClick={(event) => handleTagClick(event, tag)}
-                          className="text-blue-500 hover:underline cursor-pointer text-sm"
+                          className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
                         >
                           {tag}
                         </span>
                       ))}
-                    </div>
                   </div>
-                </Link>
-                <div className="p-6">
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    Visit Project
-                  </a>
                 </div>
+              </Link>
+              <div className="p-6 mt-auto"> {/* Add mt-auto to push it to the bottom */}
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  Visit Project
+                </a>
               </div>
+            </div>            
             ))}
           </div>
         ) : (
