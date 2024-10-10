@@ -5,7 +5,7 @@ declare module 'dompurify' {
     };
 
     // Sanitizes the input string by removing disallowed tags and attributes
-    export function sanitize(dirty: string, _options?: DOMPurifyOptions): string;
+    export function sanitize(_dirty: string, _options?: DOMPurifyOptions): string;
 
     // Sets global configuration options for DOMPurify
     export function setConfig(_options: DOMPurifyOptions): void; // Renamed to _options
