@@ -14,7 +14,7 @@ const [loading, setLoading] = useState(true);
 const [error, setError] = useState<string | null>(null);
 const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
 const searchTerm = params.search || '';
-const [isFullscreen, setIsFullscreen] = React.useState(false);
+const [, setIsFullscreen] = React.useState(false);
 
 
 
@@ -62,6 +62,7 @@ useEffect(() => {
         }
     };
 
+    requestFullscreen
 
     const onFullscreenChange = () => {
         setIsFullscreen(Boolean(document.fullscreenElement));

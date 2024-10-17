@@ -14,7 +14,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
+  const [, setIsFullscreen] = React.useState(false);
   const router = useRouter();
   const id = params.id; 
 

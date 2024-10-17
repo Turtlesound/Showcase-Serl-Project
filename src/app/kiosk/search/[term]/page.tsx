@@ -14,7 +14,7 @@ export default function KioskPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [, setIsFullscreen] = useState(false);
 
     // Get the dynamic search term from the URL
     const params = useParams();
