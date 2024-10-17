@@ -39,7 +39,7 @@ export default function RootLayout({
           <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 md:px-6">
             <div>
               <Link href="/" className="text-2xl font-bold hover:underline">
-                MyProject
+              Project Showcase
               </Link>
             </div>
             <div className="flex-1 w-full md:w-auto mx-0 md:mx-8 mt-4 md:mt-0">
