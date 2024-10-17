@@ -15,7 +15,6 @@ export default function KioskPage() {
     const [error, setError] = useState<string | null>(null);
     const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
-    const router = useRouter();
 
     // Get the dynamic search term from the URL
     const params = useParams();
@@ -173,8 +172,7 @@ export default function KioskPage() {
                                 <div className="text-sm text-gray-600 font-semibold">
                                     Type:{" "}
                                     <span
-                                        onClick={() => handleTypeClick(currentProject.type)}
-                                        className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
+                                        className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold"
                                     >
                                         {currentProject.type}
                                     </span>
@@ -184,8 +182,7 @@ export default function KioskPage() {
                                     {currentProject.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            onClick={() => handleTagClick(tag)}
-                                            className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
+                                            className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold"
                                         >
                                             {tag}
                                         </span>

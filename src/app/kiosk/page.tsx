@@ -52,15 +52,6 @@ const fetchProjects = async () => {
 fetchProjects();
 }, [searchTerm]);
 
-const nextProject = () => {
-setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
-};
-
-const prevProject = () => {
-setCurrentProjectIndex(
-    (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
-);
-};
 
 
 // Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn it of on a raspberry it should fullscreen on loading website.
@@ -175,8 +166,7 @@ return (
                 <div className="text-sm text-gray-600 font-semibold">
                 Type:{" "}
                 <span
-                    onClick={() => handleTypeClick(currentProject.type)}
-                    className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
+                    className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold"
                 >
                     {currentProject.type}
                 </span>
@@ -186,8 +176,7 @@ return (
                 {currentProject.tags.map((tag) => (
                     <span
                     key={tag}
-                    onClick={() => handleTagClick(tag)}
-                    className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
+                    className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold"
                     >
                     {tag}
                     </span>
