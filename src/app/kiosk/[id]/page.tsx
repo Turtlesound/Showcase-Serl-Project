@@ -111,41 +111,15 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
             
             <div className="bg-white p-8 rounded-lg flex flex-col md:flex-row gap-8 mb-8 flex-1 mr-0 md:mr-8 shadow-md">
               {/* Screenshot section */}
-              <div className="w-full relative h-[500px]" id="modal">
+              <div className="w-full relative h-[500px]">
   <Image
     src={project.screenshots[currentImageIndex]}
     alt={`${project.title} screenshot ${currentImageIndex + 1}`}
     fill
     sizes="100vw"
-    className="rounded-lg object-contain cursor-pointer clickable"
+    className="rounded-lg object-contain cursor-pointe"
     priority={currentImageIndex === 0}
-    onClick={() => openModal(project.screenshots[currentImageIndex])} // Open modal on image click
   />
-  {/* Move the button container outside or below the image */}
-  <div className="absolute inset-0 flex justify-between items-center pointer-events-none">
-    <button
-      className="bg-gray-200 text-gray-800 text-3xl cursor-pointer p-1 rounded-full transition duration-200 hover:bg-gray-300 pointer-events-auto"
-      onClick={() =>
-        setCurrentImageIndex(
-          (prevIndex) => (prevIndex - 1 + project.screenshots.length) % project.screenshots.length
-        )
-      }
-      aria-label="Previous image"
-    >
-      &#10094;
-    </button>
-    <button
-      className="bg-gray-200 text-gray-800 text-3xl cursor-pointer p-1 rounded-full transition duration-200 hover:bg-gray-300 pointer-events-auto"
-      onClick={() =>
-        setCurrentImageIndex(
-          (prevIndex) => (prevIndex + 1) % project.screenshots.length
-        )
-      }
-      aria-label="Next image"
-    >
-      &#10095;
-    </button>
-  </div>
 </div>
 
               {/* Project Info section */}
@@ -163,7 +137,6 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                     rel="noopener noreferrer"
                     className="inline-block mt-4 text-blue-500 hover:underline text-lg font-semibold"
                   >
-                    Visit project
                   </a>
                 </div>
 
@@ -180,9 +153,9 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                   </p>
                 </div>
               </div>
+              {/* Sidebar with Tags and Type on the right */}
+            
             </div>
-
-            {/* Sidebar with Tags and Type on the right */}
             <div className="w-full md:w-36 mt-8 md:mt-0">
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="text-sm text-gray-600 font-semibold">
@@ -208,41 +181,12 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                 </div>
               </div>
             </div>
+            
           </div>
 
-          {/* Long description section */}
-          <div className="prose max-w-none">
-            <ReactMarkdown rehypePlugins={[rehypeRaw]}>{sanitizedDescription}</ReactMarkdown>
-          </div>
+          
         </div>
       </div>
-
-      {/* Modal to display the enlarged image */}
-      <Modal
-        isOpen={isModalOpen} // Modal visibility state
-        onRequestClose={closeModal} // Close modal when requested
-        contentLabel="Enlarged Image"
-        className="flex items-center justify-center fixed inset-0 z-50 outline-none focus:outline-none"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-75 z-40"
-      >
-        <div className="relative">
-          {selectedImage && (
-            <Image
-              src={selectedImage}
-              alt="Enlarged Screenshot"
-              width={800}
-              height={600}
-              className="object-contain rounded-lg"
-            />
-          )}
-          <button
-            onClick={closeModal}
-            className="absolute top-2 right-2 bg-gray-100 p-2 rounded-full focus:outline-none"
-          >
-            ✖
-          </button>
-        </div>
-      </Modal>
     </>
   );
 }

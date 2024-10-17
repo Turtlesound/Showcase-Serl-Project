@@ -21,7 +21,7 @@ const config: Config = {
         'screen-lg': '1024px', // Large screens
         'screen-xl': '1280px', // Extra large screens
         'screen-2xl': '1536px', // Extra extra large screens
-        'full': '80%', // Full width
+        'full': '100%', // Full width
       },
       typography: (theme: (key: string) => string) => ({
         DEFAULT: {

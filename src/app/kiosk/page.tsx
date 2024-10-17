@@ -30,7 +30,7 @@ export default function KioskPage() {
 
   useEffect(() => {
     fetchProjects();
-
+    document.documentElement.requestFullscreen()
     // Listen for fullscreen changes
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
