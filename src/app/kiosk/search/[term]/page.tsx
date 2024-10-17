@@ -16,9 +16,13 @@ export default function KioskPage() {
     const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
     const [, setIsFullscreen] = useState(false);
 
-    // Get the dynamic search term from the URL
     const params = useParams();
-    const searchTerm = params.term || ''; // The 'term' comes from the dynamic route
+    let searchTerm = '';
+    
+    if (params?.term) {
+      // Check if params.term is a string or an array and handle appropriately
+    searchTerm = Array.isArray(params.term) ? params.term.join(' ') : params.term;
+    }
     
     // Fetch projects based on search term
     useEffect(() => {
