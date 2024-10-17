@@ -35,7 +35,7 @@ export default function RootLayout({
   };
 
   // Hide the navbar on the kiosk page and its subpaths
-  const isKioskPage = pathname.startsWith('/kiosk'); // Check if the path starts with /kiosk
+  const isKioskPage = pathname?.startsWith('/kiosk') || false; // Check if the path starts with /kiosk
 
   return (
     <html lang="en">
