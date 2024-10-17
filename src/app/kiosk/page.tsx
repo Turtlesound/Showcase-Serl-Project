@@ -1,235 +1,204 @@
 'use client';
 
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { getProjects } from '@/lib/projectService';
+import { useRouter } from 'next/navigation';
+import { getProjects, searchProjects } from '@/lib/projectService'; // You'll need to implement these
 import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';
+import Head from 'next/head';
+import Layout from '@/app/layout'; //added to remove navbar
 
-export default function KioskPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+export default function KioskPage({ params }: { params: { search?: string } }) {
+const [projects, setProjects] = useState<Project[]>([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
+const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+const router = useRouter();
+const searchTerm = params.search || '';
+const [isFullscreen, setIsFullscreen] = React.useState(false);
 
-  // Fetching projects
-  const fetchProjects = async () => {
+
+
+
+useEffect(() => {
+const fetchProjects = async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getProjects();
-      setProjects(data);
-    } catch (err) {
-      setError('Error fetching projects');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjects();
-    document.documentElement.requestFullscreen()
-    // Listen for fullscreen changes
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    };
-  }, []);
-
-  const filteredProjects = projects.filter((project) => {
-    const search = searchTerm.toLowerCase();
-    return (
-      project.title?.toLowerCase().includes(search) ||
-      project.tags?.some(tag => tag.toLowerCase().includes(search)) ||
-      project.type?.toLowerCase().includes(search) ||
-      project.author?.toLowerCase().includes(search) ||
-      project.description?.toLowerCase().includes(search)
-    );
-  });
-
-  const currentProject = filteredProjects[currentIndex];
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    setCurrentIndex(0);
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (filteredProjects.length > 0) {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % filteredProjects.length);
-      }
-    }, 5000);
-    return () => clearInterval(intervalId);
-  }, [filteredProjects.length]);
-
-  const toggleFullscreen = () => {
-    if (!isFullscreen) {
-      document.documentElement.requestFullscreen();
+    let data;
+    if (searchTerm) {
+        data = await searchProjects(searchTerm); // Fetch projects by search term
     } else {
-      document.exitFullscreen();
+        data = await getProjects(); // Fetch all projects
     }
-    setIsFullscreen(!isFullscreen);
-  };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg font-semibold animate-pulse">Loading projects...</p>
-      </div>
-    );
-  }
+    if (data && data.length > 0) {
+        setProjects(data);
+        setCurrentProjectIndex(0); // Reset to the first project on fetch
+    } else {
+        setProjects([]);
+    }
+    } catch (err) {
+    setError('Error fetching projects');
+    } finally {
+    setLoading(false);
+    }
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg font-semibold text-red-600">{error}</p>
-      </div>
-    );
-  }
 
-  if (filteredProjects.length === 0) {
-    return (
-      <div className="min-h-screen p-8 flex items-center justify-center flex-col">
-        <div className="mb-6 w-full md:w-1/2">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search projects..."
-            className="border border-gray-300 rounded-md p-2 w-full transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <p className="text-lg text-gray-600">No projects found.</p>
-      </div>
-    );
-  }
+};
 
-  return (
-    <div className={`min-h-screen p-8 flex flex-col items-center justify-center ${isFullscreen ? 'fullscreen' : ''}`}>
-      {/* Search Input and Fullscreen Toggle */}
-      {!isFullscreen && (
-        <div className="flex justify-between mb-6 w-full">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search projects..."
-            className="border border-gray-300 rounded-md p-2 w-full md:w-1/2 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            onClick={toggleFullscreen}
-            className="ml-4 p-4 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 text-lg transition duration-200"
-          >
-            {isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-          </button>
-        </div>
-      )}
 
-      {/* Project Container */}
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
-        {/* Screenshots Section */}
-        <div className="flex flex-col items-center">
-          {currentProject?.screenshots && currentProject.screenshots.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
-              {currentProject.screenshots.slice(0, 4).map((screenshot, index) => (
-                <div key={index} className="relative w-full h-full">
-                  <Image
-                    src={screenshot || '/placeholder.png'}
-                    alt={`${currentProject.title} screenshot ${index + 1}`}
-                    layout="responsive"
-                    width={800} // Use a base width
-                    height={450} // Use a base height
-                    className="object-cover w-full max-h-[calc(100vh-4rem)]"
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="w-full h-80 bg-gray-200 flex items-center justify-center rounded-lg shadow">
-              <p className="text-gray-600 text-2xl">No images available</p>
-            </div>
-          )}
-        </div>
+fetchProjects();
+}, [searchTerm]);
 
-        {/* Project Info Section */}
-        {currentProject && (
-          <div className="lg:max-w-3xl text-center lg:text-left">
-            <h1 className="text-3xl font-extrabold mb-4 text-gray-900">{currentProject.title || 'Untitled'}</h1>
-            <p className="text-sm text-gray-800 mb-4">{currentProject.description || 'No description available'}</p>
-            <p className="text-sm text-gray-700 mb-2">Type: <span className="font-semibold">{currentProject.type || 'Unknown'}</span></p>
-            <p className="text-sm text-gray-700 mb-2">Tags: <span className="font-semibold">{currentProject.tags?.join(', ') || 'No tags available'}</span></p>
-            <p className="text-sm text-gray-700 mb-2">Author: <span className="font-semibold">{currentProject.author || 'Unknown'}</span></p>
-            <p className="text-sm text-gray-700 mb-2">Created: <span className="font-semibold">{currentProject.created_at ? new Date(currentProject.created_at).toLocaleDateString() : 'N/A'}</span></p>
-            <p className="text-sm text-gray-700 mb-2">Updated: <span className="font-semibold">{currentProject.updated_at ? new Date(currentProject.updated_at).toLocaleDateString() : 'N/A'}</span></p>
+const nextProject = () => {
+setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
+};
 
-            {/* Visit Button and QR Code */}
-            <div className="flex items-center mt-4 justify-center lg:justify-start">
-              {currentProject.url && (
-                <>
-                  <a
+const prevProject = () => {
+setCurrentProjectIndex(
+    (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
+);
+};
+
+
+// Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn it of on a raspberry it should fullscreen on loading website.
+useEffect(() => {
+    const requestFullscreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen() // you can add this without request to force fullscreen (not considered "correct")
+                .then(() => setIsFullscreen(true))
+                .catch((err) => console.error('Fullscreen request failed', err));
+        }
+    };
+
+
+    const onFullscreenChange = () => {
+        setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+
+    return () => {
+        document.removeEventListener('fullscreenchange', onFullscreenChange);
+    };
+}, []);
+
+
+if (loading) {
+return (
+    <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+    </div>
+);
+}
+
+if (error) {
+return (
+    <div className="min-h-screen flex items-center justify-center">
+    <p className="text-lg font-medium text-red-600">Error: {error}</p>
+    </div>
+);
+}
+
+if (projects.length === 0) {
+return (
+    <div className="min-h-screen flex items-center justify-center">
+    <p className="text-lg text-gray-600">No projects found.</p>
+    </div>
+);
+}
+
+const currentProject = projects[currentProjectIndex];
+
+return (
+    <Layout  showNavbar={false}>
+    <Head>
+        <title>{currentProject.title}</title>
+        <meta name="description" content={currentProject.description} />
+    </Head>
+
+    {/* General Wrapper div */}
+    <div className="container mx-auto max-w-full px-4 py-8">
+        <div className="min-h-screen bg-gray-50 py-8">
+          {/* Main content section */}
+        <div className="flex flex-col justify-between px-4 ">
+            {/* Top section with grey backdrop */}
+            
+            <div className="bg-white p-8 rounded-lg flex flex-col md:flex-row gap-8 mb-4 flex-1 mr-0 shadow-md">
+            {/* Screenshot section */}
+            <div className="w-full relative h-[500px]">
+<Image
+    src={currentProject.screenshots[0]}
+    alt={`${currentProject.title} screenshot ${0 + 1}`}
+    fill
+    sizes="100vw"
+    className="rounded-lg object-contain cursor-pointe"
+/>
+</div>
+
+              {/* Project Info section */}
+            <div className="w-1/4 flex flex-col gap-4 ">
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">{currentProject.title}</h1>
+                {/* Project Description Section */}
+                <p className="text-gray-600 mb-4 break-words">{currentProject.description}</p>
+
+                {/* QR Code and Visit button section */}
+                <div className="flex flex-col gap-2">
+                <QRCodeSVG value={currentProject.url} size={140} />
+                <a
                     href={currentProject.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline text-lg font-semibold"
-                  >
-                  </a>
-                  <div className="">
-                    <QRCodeSVG value={currentProject.url} size={180} />
-                  </div>
-                </>
-              )}
+                    className="inline-block mt-4 text-blue-500 hover:underline text-lg font-semibold"
+                >
+                </a>
+                </div>
+                {/* Author and date section */}
+                <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+                <p>
+                    Author: <span className="font-semibold">{currentProject.author}</span>
+                </p>
+                <p>
+                    Created: <span className="font-semibold">{new Date(currentProject.created_at).toLocaleDateString()}</span>
+                </p>
+                <p>
+                    Updated: <span className="font-semibold">{new Date(currentProject.updated_at).toLocaleDateString()}</span>
+                </p>
+                </div>
             </div>
-          </div>
-        )}
-      </div>
-
-      <style jsx global>{`
-        .fullscreen {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          z-index: 9999;
-          justify-content: center;
-          align-items: center;
-          background-color: #ffffff; /* Changed to white for better contrast */
-          overflow: auto;
-          padding: 20px; /* Added padding for better spacing */
-        }
-
-        .fullscreen .grid {
-          grid-template-columns: 1fr 1fr !important;
-          gap: 20px; /* Adjusted gap for better spacing */
-        }
-
-        .fullscreen img {
-          width: 100% !important;
-          height: 100% !important;
-        }
-
-        .fullscreen h1 {
-          font-size: 3rem !important; /* Adjusted font size for full screen */
-          color: #1a202c; /* Darker text for better visibility */
-        }
-
-        .fullscreen .text-sm {
-          font-size: 1.4rem !important; /* Adjusted for full screen */
-          color: #4a5568; /* Darker text */
-        }
-
-        .fullscreen .text-lg {
-          font-size: 1.6rem !important; /* Adjusted for full screen */
-          color: #4a5568; /* Darker text */
-        }
-      `}</style>
+            </div>
+            {/* Sidebar with Tags and Type on the right */}
+            <div className="w-full mt-8 md:mt-0">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="text-sm text-gray-600 font-semibold">
+                Type:{" "}
+                <span
+                    onClick={() => handleTypeClick(currentProject.type)}
+                    className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
+                >
+                    {currentProject.type}
+                </span>
+                </div>
+                <div className="flex flex-wrap gap-2 text-sm text-gray-600 font-semibold mt-4">
+                Tags: 
+                {currentProject.tags.map((tag) => (
+                    <span
+                    key={tag}
+                    onClick={() => handleTagClick(tag)}
+                    className="bg-slate-200 text-slate-600 rounded-full px-3 py-1 text-sm font-semibold cursor-pointer"
+                    >
+                    {tag}
+                    </span>
+                ))}
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
-  );
+    </Layout>
+);
 }
+

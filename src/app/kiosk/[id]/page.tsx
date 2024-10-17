@@ -6,25 +6,22 @@ import { getProjectById } from '@/lib/projectService';
 import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';
 import { useRouter } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
-import Modal from 'react-modal'; // Import react-modal
-import rehypeRaw from 'rehype-raw';
-import DOMPurify from 'dompurify';
 import Head from 'next/head';
+import Layout from '@/app/layout'; //added to remove navbar
+
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
-  const [selectedImage, setSelectedImage] = useState<string | null>(null); // State for selected image
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
   const router = useRouter();
+  const id = params.id; 
 
   useEffect(() => {
     const fetchProject = async () => {
       const id = params.id;
-
+        
       if (!id) return;
 
       setLoading(true);
@@ -42,22 +39,34 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
       } finally {
         setLoading(false);
       }
+
     };
 
     fetchProject();
   }, [params.id]);
 
-  // Open the modal when an image is clicked
-  const openModal = (imageSrc: string) => {
-    setSelectedImage(imageSrc); // Set the image to display
-    setIsModalOpen(true); // Show the modal
-  };
+   // Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn it of on a raspberry it should fullscreen on loading website.
+  useEffect(() => {
+    const requestFullscreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen()
+                .then(() => setIsFullscreen(true))
+                .catch((err) => console.error('Fullscreen request failed', err));
+        }
+    };
 
-  // Close the modal
-  const closeModal = () => {
-    setIsModalOpen(false); // Hide the modal
-    setSelectedImage(null); // Reset the selected image
-  };
+    requestFullscreen();
+
+    const onFullscreenChange = () => {
+        setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+
+    return () => {
+        document.removeEventListener('fullscreenchange', onFullscreenChange);
+    };
+}, []);
 
   if (loading) {
     return (
@@ -78,13 +87,13 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg text-gray-600">Project not found.</p>
+            <p className="text-lg text-gray-600">
+            {id ? `No projects with id "${id}".` : `No projects found.`}
+            </p>
       </div>
     );
   }
 
-  // Sanitize the HTML content before rendering
-  const sanitizedDescription = DOMPurify.sanitize(project.description_long);
 
   // Handle tag and type navigation
   const handleTagClick = (tag: string) => {
@@ -96,7 +105,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <>
+    <Layout  showNavbar={false}>
       <Head>
         <title>{project.title}</title>
         <meta name="description" content={project.description} />
@@ -106,27 +115,26 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
       <div className="container mx-auto max-w-full px-4 py-8">
         <div className="min-h-screen bg-gray-50 py-8">
           {/* Main content section */}
-          <div className="flex flex-col md:flex-row justify-between px-4 ">
+          <div className="flex flex-col justify-between px-4 ">
             {/* Top section with grey backdrop */}
             
-            <div className="bg-white p-8 rounded-lg flex flex-col md:flex-row gap-8 mb-8 flex-1 mr-0 md:mr-8 shadow-md">
+            <div className="bg-white p-8 rounded-lg flex flex-col md:flex-row gap-8 mb-4 flex-1 mr-0 shadow-md">
               {/* Screenshot section */}
               <div className="w-full relative h-[500px]">
   <Image
-    src={project.screenshots[currentImageIndex]}
-    alt={`${project.title} screenshot ${currentImageIndex + 1}`}
+    src={project.screenshots[0]}
+    alt={`${project.title} screenshot ${0 + 1}`}
     fill
     sizes="100vw"
     className="rounded-lg object-contain cursor-pointe"
-    priority={currentImageIndex === 0}
   />
 </div>
 
               {/* Project Info section */}
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-1/4 flex flex-col gap-4 ">
                 <h1 className="text-3xl md:text-4xl font-bold mb-4">{project.title}</h1>
                 {/* Project Description Section */}
-                <p className="text-gray-600 mb-4   ">{project.description}</p>
+                <p className="text-gray-600 mb-4 break-words">{project.description}</p>
 
                 {/* QR Code and Visit button section */}
                 <div className="flex flex-col gap-2">
@@ -139,7 +147,6 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                   >
                   </a>
                 </div>
-
                 {/* Author and date section */}
                 <div className="flex flex-wrap gap-2 text-sm text-gray-600">
                   <p>
@@ -153,10 +160,9 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                   </p>
                 </div>
               </div>
-              {/* Sidebar with Tags and Type on the right */}
-            
             </div>
-            <div className="w-full md:w-36 mt-8 md:mt-0">
+            {/* Sidebar with Tags and Type on the right */}
+            <div className="w-full mt-8 md:mt-0">
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="text-sm text-gray-600 font-semibold">
                   Type:{" "}
@@ -167,8 +173,8 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                     {project.type}
                   </span>
                 </div>
-                <div className="text-sm text-gray-600 font-semibold mt-4">Tags:</div>
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="flex flex-wrap gap-2 text-sm text-gray-600 font-semibold mt-4">
+                  Tags: 
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
@@ -181,12 +187,9 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                 </div>
               </div>
             </div>
-            
           </div>
-
-          
         </div>
       </div>
-    </>
+    </Layout>
   );
 }
