@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { getProjects, searchProjects } from '@/lib/projectService';
 import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';

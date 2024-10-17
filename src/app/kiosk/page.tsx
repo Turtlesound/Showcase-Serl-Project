@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { getProjects, searchProjects } from '@/lib/projectService'; // You'll need to implement these
 import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';
@@ -14,7 +13,6 @@ const [projects, setProjects] = useState<Project[]>([]);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState<string | null>(null);
 const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-const router = useRouter();
 const searchTerm = params.search || '';
 const [isFullscreen, setIsFullscreen] = React.useState(false);
 
