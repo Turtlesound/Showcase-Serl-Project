@@ -19,13 +19,12 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
-// Define the props for the layout
-interface LayoutProps {
+// The layout for your application
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-  showNavbar?: boolean; // make showNavbar optional and default to true
-}
-
-export default function Layout({ children, showNavbar = true }: LayoutProps) {
+}) {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
@@ -37,34 +36,38 @@ export default function Layout({ children, showNavbar = true }: LayoutProps) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}>
-        {showNavbar && ( // Conditionally render the navbar based on showNavbar prop
-          <header className="bg-slate-600 text-white py-4">
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 md:px-6">
-              <div>
-                <Link href="/" className="text-2xl font-bold hover:underline">
-                  Project Showcase
-                </Link>
-              </div>
-              <div className="flex-1 w-full md:w-auto mx-0 md:mx-8 mt-4 md:mt-0">
-                {/* Search Bar */}
-                <form onSubmit={handleSearchSubmit}>
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search projects..."
-                    className="w-full px-4 py-2 text-gray-900 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                  />
-                </form>
-              </div>
-              <nav className="mt-4 md:mt-0 space-x-4 md:space-x-6">
-                <Link href="/" className="hover:underline hover:text-indigo-300 transition duration-200">Home</Link>
-                <Link href="/projects" className="hover:underline hover:text-indigo-300 transition duration-200">Projects</Link>
-                <Link href="/kiosk" className="hover:underline hover:text-indigo-300 transition duration-200">Kiosk</Link>
-              </nav>
+        <header className="bg-slate-600 text-white py-4">
+          <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 md:px-6">
+            <div>
+              <Link href="/" className="text-2xl font-bold hover:underline">
+                Project Showcase
+              </Link>
             </div>
-          </header>
-        )}
+            <div className="flex-1 w-full md:w-auto mx-0 md:mx-8 mt-4 md:mt-0">
+              {/* Search Bar */}
+              <form onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search projects..."
+                  className="w-full px-4 py-2 text-gray-900 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </form>
+            </div>
+            <nav className="mt-4 md:mt-0 space-x-4 md:space-x-6">
+              <Link href="/" className="hover:underline hover:text-indigo-300 transition duration-200">
+                Home
+              </Link>
+              <Link href="/projects" className="hover:underline hover:text-indigo-300 transition duration-200">
+                Projects
+              </Link>
+              <Link href="/kiosk" className="hover:underline hover:text-indigo-300 transition duration-200">
+                Kiosk
+              </Link>
+            </nav>
+          </div>
+        </header>
 
         {/* Main Content */}
         <main className="container mx-auto max-w-full py-8 px-4">
