@@ -22,7 +22,7 @@ const geistMono = localFont({
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  showNavbar?: boolean; // Add this line
+  showNavbar: boolean; 
 }
 
 export default function RootLayout({ children, showNavbar = true }: RootLayoutProps) {
