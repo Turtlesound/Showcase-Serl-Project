@@ -1,4 +1,3 @@
-// RootLayout.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -20,12 +19,13 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
-interface RootLayoutProps {
+// Define the props for the layout
+interface LayoutProps {
   children: React.ReactNode;
-  showNavbar: boolean; 
+  showNavbar?: boolean; // make showNavbar optional and default to true
 }
 
-export default function RootLayout({ children, showNavbar = true }: RootLayoutProps) {
+export default function Layout({ children, showNavbar = true }: LayoutProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
