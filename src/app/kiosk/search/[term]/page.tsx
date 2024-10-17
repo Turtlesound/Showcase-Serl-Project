@@ -7,7 +7,7 @@ import { getProjects, searchProjects } from '@/lib/projectService';
 import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';
 import Head from 'next/head';
-import Layout from '@/app/layout'; //added to remove navbar
+
 
 export default function KioskPage() {
     const [projects, setProjects] = useState<Project[]>([]);
@@ -110,7 +110,7 @@ export default function KioskPage() {
     const currentProject = projects[currentProjectIndex];
 
     return (
-        <Layout  showNavbar={false}>
+        <>
             <Head>
                 <title>{currentProject.title}</title>
                 <meta name="description" content={currentProject.description} />
@@ -193,6 +193,6 @@ export default function KioskPage() {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </>
     );
 }

@@ -7,7 +7,6 @@ import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import Layout from '@/app/layout'; //added to remove navbar
 
 
 export default function ProjectPage({ params }: { params: { id: string } }) {
@@ -105,7 +104,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <Layout  showNavbar={false}>
+    <>
       <Head>
         <title>{project.title}</title>
         <meta name="description" content={project.description} />
@@ -190,6 +189,6 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }
