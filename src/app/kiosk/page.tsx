@@ -116,35 +116,17 @@ return (
     </Head>
 
     {/* General Wrapper div */}
-    <div className="container mx-auto max-w-full px-4 py-8">
+    <div className="container mx-auto max-w-full px-4 py-0">
         <div className="min-h-screen bg-gray-50 py-8">
           {/* Main content section */}
         <div className="flex flex-col justify-between px-4 ">
             {/* Top section with grey backdrop */}
             
             <div className="bg-white p-8 rounded-lg flex flex-col md:flex-row gap-8 mb-4 flex-1 mr-0 shadow-md">
-                {/* Screenshot section */}
-                <div className="w-full relative h-[500px] flex flex gap-4">
-                {currentProject.screenshots.map((screenshot, index) => (
-                    <div key={index} className="relative w-full h-[400px] md:w-1/2">
-                    <Image
-                        src={screenshot}
-                        alt={`${currentProject.title} screenshot ${index + 1}`}
-                        fill
-                        sizes="100vw"
-                        onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
-                        className="rounded-lg object-contain cursor-pointer"
-                    />
-                    </div>
-                ))}
-                </div>
+
 
               {/* Project Info section */}
-            <div className="w-1/4 flex flex-col gap-4 ">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4 break-words">{currentProject.title}</h1>
-                {/* Project Description Section */}
-                <p className="text-gray-600 mb-4 break-words">{currentProject.description}</p>
-
+            <div className="md:w-1/4 flex flex-col gap-4 ">
                 {/* QR Code and Visit button section */}
                 <div className="flex flex-col gap-2">
                 <QRCodeSVG value={currentProject.url} size={140} />
@@ -155,7 +137,15 @@ return (
                     className="inline-block mt-4 text-blue-500 hover:underline text-lg font-semibold"
                 >
                 </a>
+
+
+                
                 </div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 break-words">{currentProject.title}</h1>
+                {/* Project Description Section */}
+                <p className="text-gray-600 mb-4 break-words">{currentProject.description}</p>
+
+                
                 {/* Author and date section */}
                 <div className="flex flex-wrap gap-2 text-sm text-gray-600">
                 <p>
@@ -167,11 +157,31 @@ return (
                 <p>
                     Updated: <span className="font-semibold">{new Date(currentProject.updated_at).toLocaleDateString()}</span>
                 </p>
+
+                
+                
                 </div>
+
             </div>
+                    {/* Screenshot section */}
+                    <div className="flex-1 flex flex-wrap gap-4 ">
+                    {currentProject.screenshots.map((screenshot, index) => (
+                        <div key={index} className="relative w-full flex-1 flex-wrap h-[500px]">  {/*  max-sm:h-[500px] add this in div to make screenshot show in smaller screens */} 
+                        <Image
+                            src={screenshot}
+                            alt={`${currentProject.title} screenshot ${index + 1}`}
+                            fill
+                            onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
+                            className="rounded-lg object-contain cursor-pointer"
+                        />
+                        </div>
+                    ))}
+                    </div>
+
+                
             </div>
             {/* Sidebar with Tags and Type on the right */}
-            <div className="w-full mt-8 md:mt-0">
+            <div className="w-full mt-0 ">
             <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="text-sm text-gray-600 font-semibold">
                 Type:{" "}
