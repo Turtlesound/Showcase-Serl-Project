@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProjects, searchProjects } from '@/lib/projectService'; // Assuming you have these functions
+import { getProjects, searchProjects } from '@/lib/projectService'; 
 
 // Handle the dynamic route to show all projects or filtered projects
 export async function GET(req: NextRequest, { params }: { params: { search?: string } }) {

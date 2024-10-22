@@ -123,6 +123,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   <Image
     src={project.screenshots[0]}
     alt={`${project.title} screenshot ${0 + 1}`}
+    onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
     fill
     sizes="100vw"
     className="rounded-lg object-contain cursor-pointe"
@@ -137,9 +138,9 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
 
                 {/* QR Code and Visit button section */}
                 <div className="flex flex-col gap-2">
-                  <QRCodeSVG value={project.url} size={140} />
+                  <QRCodeSVG value={`${window.location.origin}/projects/${id}`} size={140} />
                   <a
-                    href={project.url}
+                    href={`${window.location.origin}/projects/${id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block mt-4 text-blue-500 hover:underline text-lg font-semibold"

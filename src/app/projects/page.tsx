@@ -95,6 +95,7 @@ const ProjectsPageContent = () => {
                   alt={project.title}
                   width={500}
                   height={250}
+                  onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
                   className="object-contain w-full h-48"
                 />
                 <div className="p-6 flex-grow">

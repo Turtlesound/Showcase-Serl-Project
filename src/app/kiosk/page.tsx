@@ -132,6 +132,7 @@ return (
                         alt={`${currentProject.title} screenshot ${index + 1}`}
                         fill
                         sizes="100vw"
+                        onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
                         className="rounded-lg object-contain cursor-pointer"
                     />
                     </div>
@@ -140,7 +141,7 @@ return (
 
               {/* Project Info section */}
             <div className="w-1/4 flex flex-col gap-4 ">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">{currentProject.title}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 break-words">{currentProject.title}</h1>
                 {/* Project Description Section */}
                 <p className="text-gray-600 mb-4 break-words">{currentProject.description}</p>
 

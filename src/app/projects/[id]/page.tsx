@@ -119,6 +119,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     sizes="100vw"
     className="rounded-lg object-contain cursor-pointer clickable"
     priority={currentImageIndex === 0}
+    onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
     onClick={() => openModal(project.screenshots[currentImageIndex])} // Open modal on image click
   />
   {/* Move the button container outside or below the image */}
@@ -232,6 +233,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
               alt="Enlarged Screenshot"
               width={800}
               height={600}
+              onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
               className="object-contain rounded-lg"
             />
           )}
