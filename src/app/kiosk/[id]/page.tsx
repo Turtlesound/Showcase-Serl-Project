@@ -94,15 +94,6 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   }
 
 
-  // Handle tag and type navigation
-  const handleTagClick = (tag: string) => {
-    router.push(`/projects?search=${tag}`);
-  };
-
-  const handleTypeClick = (type: string) => {
-    router.push(`/projects?search=${type}`);
-  };
-
   return (
     <>
     <Head>
