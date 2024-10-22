@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { getProjectById } from '@/lib/projectService';
 import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';
-import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 
 
@@ -14,7 +13,6 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [, setIsFullscreen] = React.useState(false);
-  const router = useRouter();
   const id = params.id; 
 
   useEffect(() => {
