@@ -49,7 +49,14 @@ const fetchProjects = async () => {
 fetchProjects();
 }, [searchTerm]);
 
+// Function to cycle to the next project every 30 seconds
+useEffect(() => {
+    const interval = setInterval(() => {
+        setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
+    }, 3000); // 30 seconds
 
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+}, [projects]);
 
 // Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn it of on a raspberry it should fullscreen on loading website.
 useEffect(() => {
@@ -116,16 +123,20 @@ return (
             {/* Top section with grey backdrop */}
             
             <div className="bg-white p-8 rounded-lg flex flex-col md:flex-row gap-8 mb-4 flex-1 mr-0 shadow-md">
-            {/* Screenshot section */}
-            <div className="w-full relative h-[500px]">
-<Image
-    src={currentProject.screenshots[0]}
-    alt={`${currentProject.title} screenshot ${0 + 1}`}
-    fill
-    sizes="100vw"
-    className="rounded-lg object-contain cursor-pointe"
-/>
-</div>
+                {/* Screenshot section */}
+                <div className="w-full relative h-[500px] flex flex gap-4">
+                {currentProject.screenshots.map((screenshot, index) => (
+                    <div key={index} className="relative w-full h-[400px] md:w-1/2">
+                    <Image
+                        src={screenshot}
+                        alt={`${currentProject.title} screenshot ${index + 1}`}
+                        fill
+                        sizes="100vw"
+                        className="rounded-lg object-contain cursor-pointer"
+                    />
+                    </div>
+                ))}
+                </div>
 
               {/* Project Info section */}
             <div className="w-1/4 flex flex-col gap-4 ">
