@@ -211,7 +211,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
           </div>
 
           {/* Long description section */}
-          <div className="prose max-w-none">
+          <div className="prose max-w-none px-6">
             <ReactMarkdown rehypePlugins={[rehypeRaw]}>{sanitizedDescription}</ReactMarkdown>
           </div>
         </div>
