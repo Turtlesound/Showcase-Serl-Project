@@ -4,7 +4,7 @@ ShowcaseSERL is a curated collection of student and researcher- developed projec
 
 ## prerequisites
 
-You need node 18.17.0 for the project to run
+You need node 18.17.0 or newwer for the project to run
 
 nvm install node
 
@@ -39,6 +39,18 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+## Usage
+
+# kiosk
+http://localhost:3000/kiosk goes to a standard kiosk mode that change project automatically going though all the available projects. 
+http://localhost:3000/kiosk/search/yoursearch will show all projects that have "yoursearch" in them. You can change it to poke and it will show all projects with poke in them. 
+http://localhost:3000/kiosk/pokedex if you change pokedex to another id of the project it will show the project in kiosk mode.  
+
+For example you can go to 
+http://localhost:3000/projects/
+enter the generative-ai-for-beginners project, You will be redirected to http://localhost:3000/projects/generative-ai-for-beginners then go to 
+http://localhost:3000/kiosk/generative-ai-for-beginners to get the kiosk for the project.
 
 ## Development
 
