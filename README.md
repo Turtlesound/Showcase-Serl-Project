@@ -42,7 +42,8 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Usage
 
-# kiosk
+kiosk
+
 http://localhost:3000/kiosk goes to a standard kiosk mode that change project automatically going though all the available projects. 
 http://localhost:3000/kiosk/search/yoursearch will show all projects that have "yoursearch" in them. You can change it to poke and it will show all projects with poke in them. 
 http://localhost:3000/kiosk/pokedex if you change pokedex to another id of the project it will show the project in kiosk mode.  
