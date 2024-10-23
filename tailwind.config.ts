@@ -1,5 +1,4 @@
-import type { Config } from 'tailwindcss';
-
+import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
@@ -18,10 +17,10 @@ const config: Config = {
         'gray-light': '#f9fafb', // Light gray for backgrounds
       },
       maxWidth: {
-        'screen-lg': '1024px', 
-        'screen-xl': '1280px', 
-        'screen-2xl': '1536px', 
-        'full': '100%', 
+        'screen-lg': '1024px',
+        'screen-xl': '1280px',
+        'screen-2xl': '1536px',
+        full: '100%',
       },
       typography: (theme: (key: string) => string) => ({
         DEFAULT: {
@@ -69,6 +68,6 @@ const config: Config = {
     },
   },
   plugins: [require('@tailwindcss/typography')],
-};
+}
 
-export default config;
+export default config
