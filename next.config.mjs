@@ -4,10 +4,10 @@ const nextBasePath = process.env.NEXT_BASE_PATH || ''; // Default to empty strin
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true, // Enable React's strict mode for development
-  basePath: nextBasePath, // Set the base path from environment variable
+  reactStrictMode: true, 
+  basePath: nextBasePath, 
   images: {
-    unoptimized: true, // Disable image optimization for static export
+    unoptimized: true, 
   },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL, // Expose to client-side

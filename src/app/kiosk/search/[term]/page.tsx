@@ -32,9 +32,9 @@ export default function KioskPage() {
             try {
                 let data;
                 if (searchTerm) {
-                    data = await searchProjects(searchTerm); // Fetch filtered projects based on search term
+                    data = await searchProjects(searchTerm); 
                 } else {
-                    data = await getProjects(); // Fetch all projects
+                    data = await getProjects(); 
                 }
 
                 if (data && data.length > 0) {
@@ -53,7 +53,7 @@ export default function KioskPage() {
         fetchProjects();
     }, [searchTerm]);
 
-    // Function to cycle to the next project every 30 seconds
+    // Function to cycle to the next project
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length);
@@ -62,11 +62,11 @@ export default function KioskPage() {
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, [projects]);
 
-    // Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn it of on a raspberry it should fullscreen on loading website
+    // Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn off autoblock in the browser on an raspberry it should fullscreen on loading website.
     useEffect(() => {
         const requestFullscreen = () => {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen()
+                document.documentElement.requestFullscreen() // you can add this without request to force fullscreen (not considered "correct")
                     .then(() => setIsFullscreen(true))
                     .catch((err) => console.error('Fullscreen request failed', err));
             }
@@ -148,7 +148,7 @@ export default function KioskPage() {
 
 
                                 {/* Author and date section */}
-                                <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+                                <div className=" flex-wrap gap-2 text-sm text-gray-600 ">
                                     <p>
                                         Author: <span className="font-semibold">{currentProject.author}</span>
                                     </p>

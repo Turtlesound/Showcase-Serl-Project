@@ -15,14 +15,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Adjust global container styles for better width handling */
 .container {
   @apply mx-auto px-4 md:px-6; /* Responsive padding */
 }
 
-/* Responsive Typography */
 h1 {
-  @apply text-3xl md:text-4xl; /* Change size at medium breakpoint */
+  @apply text-3xl md:text-4xl; 
 }
 
 h2 {
@@ -30,5 +28,5 @@ h2 {
 }
 
 p {
-  @apply mb-4 text-base md:text-lg; /* Make text larger on medium screens */
+  @apply mb-4 text-base md:text-lg; 
 }

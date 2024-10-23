@@ -18,10 +18,10 @@ const config: Config = {
         'gray-light': '#f9fafb', // Light gray for backgrounds
       },
       maxWidth: {
-        'screen-lg': '1024px', // Large screens
-        'screen-xl': '1280px', // Extra large screens
-        'screen-2xl': '1536px', // Extra extra large screens
-        'full': '100%', // Full width
+        'screen-lg': '1024px', 
+        'screen-xl': '1280px', 
+        'screen-2xl': '1536px', 
+        'full': '100%', 
       },
       typography: (theme: (key: string) => string) => ({
         DEFAULT: {

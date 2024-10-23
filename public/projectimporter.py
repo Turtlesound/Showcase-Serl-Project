@@ -5,7 +5,7 @@ import codecs
 # GitHub API URL for a specific repository
 repo_url = 'https://api.github.com/repos/andreas-bauer/credit-maker'
 
-# Make a GET request to the repository endpoint
+# Make a GET request to the repository
 response = requests.get(repo_url)
 
 # Check if the request was successful
@@ -17,9 +17,9 @@ if response.status_code == 200:
         "id": repo_data['name'],
         "title": repo_data['name'],
         "description": repo_data['description'],
-        "type": "repository",  # Adjust this as needed
-        "tags": [],  # Initialize an empty list for tags
-        "screenshots": [],  # GitHub doesn't typically store screenshots
+        "type": "repository",  # choose here what type the project is
+        "tags": [],  # Initialize an empty list for tags (might be best to change here to own tags as the github topics are not great)
+        "screenshots": [],  # needs to be added manually
         "url": repo_data['html_url'],
         "created_at": repo_data['created_at'],
         "updated_at": repo_data['updated_at'],
@@ -29,16 +29,16 @@ if response.status_code == 200:
     # Check if topics is a list and extract tags
     topics = repo_data.get('topics', [])
     if isinstance(topics, list):
-        project_info["tags"] = [tag for tag in topics if tag]  # Directly use the tag strings
+        project_info["tags"] = [tag for tag in topics if tag]  
 
     # Get the README content using a separate API endpoint
-    readme_url = f"{repo_url}/readme"  # Construct the README URL
+    readme_url = f"{repo_url}/readme" 
     readme_response = requests.get(readme_url)
     
     # Check if the README request was successful
     if readme_response.status_code == 200:
         readme_data = readme_response.json()
-        # Extract the description from the README (assuming Markdown format)
+        # Extract the description from the README (Markdown format)
         if readme_data.get('content', None):  # Check if content exists
             try:
                 # Decode base64-encoded content using codecs.decode()

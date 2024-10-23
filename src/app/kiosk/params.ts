@@ -8,10 +8,8 @@ export async function GET(req: NextRequest, { params }: { params: { search?: str
     let projects;
 
     if (searchQuery) {
-      // If search query exists, filter projects by it
       projects = await searchProjects(searchQuery);
     } else {
-      // Otherwise, return all projects
       projects = await getProjects();
     }
 

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation'; // Import usePathname
+import { useRouter, usePathname } from 'next/navigation'; 
 import localFont from 'next/font/local';
 import './globals.css';
 
@@ -19,7 +19,7 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
-// The layout for your application
+// The layout for application
 export default function RootLayout({
   children,
 }: {

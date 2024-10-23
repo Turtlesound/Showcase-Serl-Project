@@ -58,7 +58,7 @@ useEffect(() => {
     return () => clearInterval(interval); // Cleanup interval on component unmount
 }, [projects]);
 
-// Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn it of on a raspberry it should fullscreen on loading website.
+// Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn off autoblock in the browser on an raspberry it should fullscreen on loading website.
 useEffect(() => {
     const requestFullscreen = () => {
         if (!document.fullscreenElement) {
@@ -147,7 +147,7 @@ return (
 
                 
                 {/* Author and date section */}
-                <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+                <div className="flex-wrap gap-2 text-sm text-gray-600 mt-auto">
                 <p>
                     Author: <span className="font-semibold">{currentProject.author}</span>
                 </p>

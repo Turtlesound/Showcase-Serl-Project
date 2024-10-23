@@ -1,24 +1,24 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation'; // useRouter to navigate
+import { useSearchParams, useRouter } from 'next/navigation'; 
 import Image from 'next/image';
 import Link from 'next/link';
-import { getProjects } from '@/lib/projectService'; // Only import the service
-import { Project } from '@/lib/projectTypes'; // Import the Project type
+import { getProjects } from '@/lib/projectService'; 
+import { Project } from '@/lib/projectTypes'; 
 
 const ProjectsPageContent = () => {
   const [projects, setProjects] = useState<Project[]>([]); // Initialize projects as an empty array
   const [tagFrequency, setTagFrequency] = useState<{ [tag: string]: number }>({}); // State for tag frequency
   const searchParams = useSearchParams(); // Hook to get the query params
   const searchTerm = searchParams?.get('search') || ''; // Get search term from URL
-  const router = useRouter(); // For programmatic navigation
+  const router = useRouter(); 
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await getProjects(); // Fetch all projects
-        setProjects(data); // Ensure data is valid before setting
+        const data = await getProjects(); 
+        setProjects(data); 
 
         // Calculate tag frequency
         const frequency: { [tag: string]: number } = {};
@@ -34,7 +34,7 @@ const ProjectsPageContent = () => {
     };
 
     fetchProjects();
-    const intervalId = setInterval(fetchProjects, 30000); // Refetch every 30 seconds
+    const intervalId = setInterval(fetchProjects, 30000); // Refetch every xx seconds
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
@@ -49,14 +49,14 @@ const ProjectsPageContent = () => {
 
   // Navigate to the projects page with a specific tag or type as a search parameter
   const handleTagClick = (event: React.MouseEvent, tag: string) => {
-    event.preventDefault(); // Prevent the default link behavior
-    event.stopPropagation(); // Stop the click event from propagating to the parent link
+    event.preventDefault(); 
+    event.stopPropagation(); 
     router.push(`/projects?search=${tag}`);
   };
 
   const handleTypeClick = (event: React.MouseEvent, type: string) => {
-    event.preventDefault(); // Prevent the default link behavior
-    event.stopPropagation(); // Stop the click event from propagating to the parent link
+    event.preventDefault(); 
+    event.stopPropagation(); 
     router.push(`/projects?search=${type}`);
   };
 
@@ -137,7 +137,7 @@ const ProjectsPageContent = () => {
                   </div>
                 </div>
               </Link>
-              <div className="p-6 mt-auto"> {/* Add mt-auto to push it to the bottom */}
+              <div className="p-6 mt-auto"> {/* mt-auto to push it to the bottom */}
                 <a
                   href={project.url}
                   target="_blank"

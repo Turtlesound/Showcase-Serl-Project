@@ -42,11 +42,11 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     fetchProject();
   }, [params.id]);
 
-   // Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn it of on a raspberry it should fullscreen on loading website.
+   // Function to trigger fullscreen, I noticed it is blocked on most browser but if you turn off autoblock in the browser on an raspberry it should fullscreen on loading website.
   useEffect(() => {
     const requestFullscreen = () => {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen()
+            document.documentElement.requestFullscreen() // you can add this without request to force fullscreen (not considered "correct")
                 .then(() => setIsFullscreen(true))
                 .catch((err) => console.error('Fullscreen request failed', err));
         }
@@ -131,7 +131,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
 
                 
                 {/* Author and date section */}
-                <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+                <div className="flex-wrap gap-2 text-sm text-gray-600">
                 <p>
                     Author: <span className="font-semibold">{project.author}</span>
                 </p>

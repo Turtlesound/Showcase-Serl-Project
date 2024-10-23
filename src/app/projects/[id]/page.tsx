@@ -7,7 +7,7 @@ import { Project } from '@/lib/projectTypes';
 import { QRCodeSVG } from 'qrcode.react';
 import { useRouter } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
-import Modal from 'react-modal'; // Import react-modal
+import Modal from 'react-modal'; 
 import rehypeRaw from 'rehype-raw';
 import DOMPurify from 'dompurify';
 import Head from 'next/head';
@@ -17,8 +17,8 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
-  const [selectedImage, setSelectedImage] = useState<string | null>(null); // State for selected image
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,14 +49,14 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
 
   // Open the modal when an image is clicked
   const openModal = (imageSrc: string) => {
-    setSelectedImage(imageSrc); // Set the image to display
-    setIsModalOpen(true); // Show the modal
+    setSelectedImage(imageSrc); 
+    setIsModalOpen(true); 
   };
 
   // Close the modal
   const closeModal = () => {
-    setIsModalOpen(false); // Hide the modal
-    setSelectedImage(null); // Reset the selected image
+    setIsModalOpen(false);
+    setSelectedImage(null);
   };
 
   if (loading) {
@@ -120,7 +120,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
     className="rounded-lg object-contain cursor-pointer clickable"
     priority={currentImageIndex === 0}
     onError={(e) => { e.currentTarget.src = '/noscreenshot.png'; }}
-    onClick={() => openModal(project.screenshots[currentImageIndex])} // Open modal on image click
+    onClick={() => openModal(project.screenshots[currentImageIndex])} 
   />
   {/* Move the button container outside or below the image */}
   <div className="absolute inset-0 flex justify-between items-center pointer-events-none">
