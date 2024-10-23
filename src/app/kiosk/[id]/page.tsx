@@ -109,9 +109,9 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
               <div className='flex flex-col gap-4 md:w-1/4 '>
                 {/* QR Code and Visit button section */}
                 <div className='flex flex-col gap-2 '>
-                  <QRCodeSVG value={project.url} size={140} />
+                  <QRCodeSVG value={`${window.location.origin}/projects/${id}`} size={140} />
                   <a
-                    href={project.url}
+                    href={`${window.location.origin}/projects/${id}`}
                     target='_blank'
                     rel='noopener noreferrer'
                     className='mt-4 inline-block text-lg font-semibold text-blue-500 hover:underline'
