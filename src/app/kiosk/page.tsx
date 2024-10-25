@@ -47,7 +47,7 @@ export default function KioskPage({ params }: { params: { search?: string } }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length)
-    }, 3000) // 30 seconds
+    }, 3000) // choose time
 
     return () => clearInterval(interval) // Cleanup interval on component unmount
   }, [projects])

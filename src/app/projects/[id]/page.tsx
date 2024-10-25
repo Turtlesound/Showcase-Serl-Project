@@ -240,8 +240,8 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
 
       {/* Modal to display the enlarged image */}
       <Modal
-        isOpen={isModalOpen} // Modal visibility state
-        onRequestClose={closeModal} // Close modal when requested
+        isOpen={isModalOpen} 
+        onRequestClose={closeModal} 
         contentLabel='Enlarged Image'
         className='fixed inset-0 z-50 flex items-center justify-center outline-none focus:outline-none'
         overlayClassName='fixed inset-0 bg-black bg-opacity-75 z-40'

@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   const [searchTerm, setSearchTerm] = useState('')
   const router = useRouter()
-  const pathname = usePathname() // Get the current pathname
+  const pathname = usePathname() 
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()

@@ -49,7 +49,6 @@ export async function getProjectById(id: string): Promise<Project | undefined> {
 }
 
 // Function to search projects based on a search term
-// Function to search projects based on a search term
 export const searchProjects = async (
   searchTerm: string
 ): Promise<Project[]> => {
