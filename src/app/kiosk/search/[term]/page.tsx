@@ -58,7 +58,7 @@ export default function KioskPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % projects.length)
-    }, 30000) // choose time 
+    }, 30000) // choose time
 
     return () => clearInterval(interval) // Cleanup interval on component unmount
   }, [projects])
@@ -135,7 +135,10 @@ export default function KioskPage() {
               <div className='flex flex-col gap-4 md:w-1/4 '>
                 {/* QR Code and Visit button section */}
                 <div className='flex flex-col gap-2'>
-                  <QRCodeSVG value={`${window.location.origin}/projects/${currentProject.id}`} size={140} />
+                  <QRCodeSVG
+                    value={`${window.location.origin}/projects/${currentProject.id}`}
+                    size={140}
+                  />
                   <a
                     href={`${window.location.origin}/projects/${currentProject.id}`}
                     target='_blank'

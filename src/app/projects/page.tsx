@@ -41,17 +41,22 @@ const ProjectsPageContent = () => {
   }, [])
 
   // Filter projects based on the search term from URL query params
-// Filter projects based on the search term from URL query params
-const filteredProjects = projects.filter((project) =>
-  (project.title && project.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
-  (project.tags && project.tags.some((tag) =>
-    tag.toLowerCase().includes(searchTerm.toLowerCase())
-  )) ||
-  (project.type && project.type.toLowerCase().includes(searchTerm.toLowerCase())) ||
-  (project.author && project.author.toLowerCase().includes(searchTerm.toLowerCase())) ||
-  (project.description && project.description.toLowerCase().includes(searchTerm.toLowerCase()))
-);
-
+  // Filter projects based on the search term from URL query params
+  const filteredProjects = projects.filter(
+    (project) =>
+      (project.title &&
+        project.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (project.tags &&
+        project.tags.some((tag) =>
+          tag.toLowerCase().includes(searchTerm.toLowerCase())
+        )) ||
+      (project.type &&
+        project.type.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (project.author &&
+        project.author.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (project.description &&
+        project.description.toLowerCase().includes(searchTerm.toLowerCase()))
+  )
 
   // Navigate to the projects page with a specific tag or type as a search parameter
   const handleTagClick = (event: React.MouseEvent, tag: string) => {
@@ -103,7 +108,11 @@ const filteredProjects = projects.filter((project) =>
                   className='block flex-grow'
                 >
                   <Image
-                    src={(project.screenshots && project.screenshots[0]) ? project.screenshots[0] : '/noscreenshot.png'}
+                    src={
+                      project.screenshots && project.screenshots[0]
+                        ? project.screenshots[0]
+                        : '/noscreenshot.png'
+                    }
                     alt={project.title}
                     width={500}
                     height={250}
