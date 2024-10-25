@@ -148,14 +148,14 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
               {/* Screenshot section */}
               <div className='flex flex-1 flex-wrap gap-4'>
   {project.screenshots && project.screenshots.length > 0 ? (
-    currentProject.screenshots.map((screenshot, index) => (
+    project.screenshots.map((screenshot, index) => (
       <div
         key={index}
         className='relative h-[500px] w-full flex-1 flex-wrap max-sm:h-[500px]'
       >
         <Image
           src={screenshot || '/noscreenshot.png'}  
-          alt={`${currentProject.title} screenshot ${index + 1}`}
+          alt={`${project.title} screenshot ${index + 1}`}
           fill
           onError={(e) => {
             e.currentTarget.src = '/noscreenshot.png';
