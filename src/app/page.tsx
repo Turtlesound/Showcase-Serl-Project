@@ -19,39 +19,47 @@ const HomePageContent = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const createdProjects = await getProjectsCreated()
-        const updatedProjects = await getProjectsUpdated()
-
-        setRecentProjects(createdProjects.slice(0, 6))
-        setUpdatedProjects(updatedProjects.slice(0, 6))
-        setDisplayedProjects(createdProjects.slice(0, 6))
-
-        const allProjects = [...createdProjects, ...updatedProjects]
-        const tagFrequency: { [tag: string]: number } = {}
+        const createdProjects = await getProjectsCreated();
+        const updatedProjects = await getProjectsUpdated();
+  
+        // Safely slice the arrays
+        setRecentProjects(createdProjects.slice(0, 6));
+        setUpdatedProjects(updatedProjects.slice(0, 6));
+        setDisplayedProjects(createdProjects.slice(0, 6));
+  
+        const allProjects = [...createdProjects, ...updatedProjects];
+        const tagFrequency: { [tag: string]: number } = {};
+  
         allProjects.forEach((project) => {
-          project.tags.forEach((tag) => {
-            tagFrequency[tag] = (tagFrequency[tag] || 0) + 1
-          })
-        })
-
+          // Check if tags exist and are an array
+          if (Array.isArray(project.tags)) {
+            project.tags.forEach((tag) => {
+              if (typeof tag === 'string') { // Ensure tag is a string
+                tagFrequency[tag] = (tagFrequency[tag] || 0) + 1;
+              }
+            });
+          }
+        });
+  
         const sortedTags = Object.entries(tagFrequency)
           .sort(([, a], [, b]) => b - a)
           .slice(0, 15)
-          .map(([tag]) => tag)
-
-        setPopularTags(sortedTags)
+          .map(([tag]) => tag);
+  
+        setPopularTags(sortedTags);
       } catch (err) {
-        console.error(err)
-        setError('Error loading projects')
+        console.error(err);
+        setError('Error loading projects');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-
-    fetchData()
-  }, [])
+    };
+  
+    fetchData();
+  }, []);
+  
 
   const handleTabClick = (tab: 'created' | 'updated') => {
     setActiveTab(tab)

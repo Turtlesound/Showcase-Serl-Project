@@ -12,22 +12,34 @@ export async function getProjects(): Promise<Project[]> {
 
 // Fetch projects sorted by creation
 export const getProjectsCreated = async () => {
-  const projects = await getProjects()
-  return projects.sort(
-    (a, b) =>
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  )
-}
+  const projects = await getProjects();
+  return projects.sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+
+    // Handle cases where created_at might be missing or invalid
+    if (isNaN(dateA.getTime())) return 1; 
+    if (isNaN(dateB.getTime())) return -1; 
+
+    return dateB.getTime() - dateA.getTime(); // Sort by created_at descending
+  });
+};
 
 // Fetch projects sorted by updated
 export const getProjectsUpdated = async () => {
-  const projects = await getProjects()
+  const projects = await getProjects();
   // Sort by updated date
-  return projects.sort(
-    (a, b) =>
-      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-  )
-}
+  return projects.sort((a, b) => {
+    const dateA = new Date(a.updated_at);
+    const dateB = new Date(b.updated_at);
+
+    // Handle cases where updated_at might be missing or invalid
+    if (isNaN(dateA.getTime())) return 1;
+    if (isNaN(dateB.getTime())) return -1; 
+
+    return dateB.getTime() - dateA.getTime(); // Sort by updated_at descending
+  });
+};
 
 // Fetch a specific project by ID
 export async function getProjectById(id: string): Promise<Project | undefined> {
@@ -37,22 +49,22 @@ export async function getProjectById(id: string): Promise<Project | undefined> {
 }
 
 // Function to search projects based on a search term
+// Function to search projects based on a search term
 export const searchProjects = async (
   searchTerm: string
 ): Promise<Project[]> => {
-  const projects = await getProjects()
-  const filteredProjects = projects.filter(
-    (project) =>
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase())
-      ) ||
-      project.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (project.author &&
-        project.author.toLowerCase().includes(searchTerm.toLowerCase())) || // Check for null or undefined
-      (project.description &&
-        project.description.toLowerCase().includes(searchTerm.toLowerCase())) // Check for null or undefined
-  )
+  const projects = await getProjects();
+  
+  const filteredProjects = projects.filter((project) => {
+    return (
+      (project.title?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (Array.isArray(project.tags) && project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))) ||
+      (project.type?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (project.author?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (project.description?.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  });
 
-  return filteredProjects
-}
+  return filteredProjects;
+};
+

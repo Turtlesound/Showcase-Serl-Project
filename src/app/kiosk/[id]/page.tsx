@@ -146,48 +146,61 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
                 </div>
               </div>
               {/* Screenshot section */}
-              <div className='flex flex-1 gap-4 md:flex-wrap '>
-                {project.screenshots.map((screenshot, index) => (
-                  <div
-                    key={index}
-                    className='relative h-[500px] flex-1 flex-wrap'
-                  >
-                    <Image
-                      src={screenshot}
-                      alt={`${project.title} screenshot ${index + 1}`}
-                      fill
-                      sizes='100vw'
-                      onError={(e) => {
-                        e.currentTarget.src = '/noscreenshot.png'
-                      }}
-                      className='cursor-pointer rounded-lg object-contain'
-                    />
-                  </div>
-                ))}
-              </div>
+              <div className='flex flex-1 flex-wrap gap-4'>
+  {project.screenshots && project.screenshots.length > 0 ? (
+    currentProject.screenshots.map((screenshot, index) => (
+      <div
+        key={index}
+        className='relative h-[500px] w-full flex-1 flex-wrap max-sm:h-[500px]'
+      >
+        <Image
+          src={screenshot || '/noscreenshot.png'}  
+          alt={`${currentProject.title} screenshot ${index + 1}`}
+          fill
+          onError={(e) => {
+            e.currentTarget.src = '/noscreenshot.png';
+          }}
+          className='cursor-pointer rounded-lg object-contain'
+        />
+      </div>
+    ))
+  ) : (
+    <div className="w-full text-center text-gray-500">
+      <Image
+        src="/noscreenshot.png"
+        alt="No screenshots available"
+        width={500}
+        height={250}
+        className="rounded-lg object-contain"
+      />
+    </div>
+  )}
+</div>
             </div>
             {/* Sidebar with Tags and Type on the right */}
             <div className='mt-0 w-full'>
-              <div className='rounded-lg bg-white p-6 shadow-md'>
-                <div className='text-sm font-semibold text-gray-600'>
-                  Type:{' '}
-                  <span className='rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'>
-                    {project.type}
-                  </span>
-                </div>
-                <div className='mt-4 flex flex-wrap gap-2 text-sm font-semibold text-gray-600'>
-                  Tags:
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className='rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+  <div className='rounded-lg bg-white p-6 shadow-md'>
+    <div className='text-sm font-semibold text-gray-600'>
+      Type:{' '}
+      <span className='rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'>
+        {project.type}
+      </span>
+    </div>
+    <div className='mt-4 flex flex-wrap gap-2 text-sm font-semibold text-gray-600'>
+      Tags:
+      {project.tags && project.tags.length > 0 ? (
+        project.tags.map((tag) => (
+          <span
+            key={tag}
+            className='rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
+          >
+            {tag}
+          </span>
+        ))
+      ) : null}
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </div>
